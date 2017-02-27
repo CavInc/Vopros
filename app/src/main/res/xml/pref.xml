@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <EditTextPreference
+        android:key="message_txt"
+        android:title="Тескс напоминания"
+        android:summary="Tекст напоминания епта"/>
+    <EditTextPreference
+        android:key="time_delay"
+        android:title="Задержка в минутах"
+        android:inputType="numberSigned"/>
+    <RingtonePreference
+        android:key="toast_ringtone"
+        android:title="Звуковое уведомление"/>
+
+
+</PreferenceScreen>
