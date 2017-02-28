@@ -19,6 +19,9 @@
             android:label="Settings">
 
         </activity>
+        <activity android:name=".TaskOutActivity">
+
+        </activity>
 
         <service
             android:name=".services.TaskService"

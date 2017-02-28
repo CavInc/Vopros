@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="btn_end_message">Остановить задание</string>
+    <string name="setting">Настройки</string>
+    <string name="btn_start_message">Запустить задание</string>
+</resources>

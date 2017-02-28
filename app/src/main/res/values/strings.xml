@@ -1,10 +1,10 @@
 <resources>
-    <string name="app_name">Vopros</string>
+    <string name="app_name" translatable="false">Vopros</string>
 
 
     <string name="setting">Setting</string>
 
-    <array name="btn_start_message">Start Service</array>
-    <array name="btn_end_message">Stop Service</array>
+    <string name="btn_start_message">Start Service</string>
+    <string name="btn_end_message">Stop Service</string>
 
 </resources>
