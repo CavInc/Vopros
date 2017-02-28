@@ -39,13 +39,15 @@ public class TaskService extends Service {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                try {
-                    TimeUnit.SECONDS.sleep(40);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                showNotification();
-                Log.d(TAG,"WORK");
+               while(true) {
+                   try {
+                       TimeUnit.SECONDS.sleep(40);
+                   } catch (InterruptedException e) {
+                       e.printStackTrace();
+                   }
+                   showNotification();
+                   Log.d(TAG, "WORK");
+               }
             }
         }).start();
 

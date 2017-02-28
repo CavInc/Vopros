@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
  */
 public class DbConnector {
     public final static int DB_VERSION = 1;
-    public final static String DB_NAME = "";
+    public final static String DB_NAME = "vopros.db3";
 
     private SQLiteDatabase db;
     private DBHelper mDBHelper;
@@ -52,7 +52,8 @@ public class DbConnector {
         private void updateData(SQLiteDatabase db,int oldVersion, int newVersion){
             // создаем базу
             if (oldVersion<1){
-                db.execSQL("");
+                db.execSQL("create table statistic (data_rec text not null primary key,"+
+                        "count_no integer,count_yes integer)");
             }
 
         }
