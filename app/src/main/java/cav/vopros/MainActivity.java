@@ -62,8 +62,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         db.open();
 
         // формируем столбцы сопоставления
-        String[] from = new String[] {"data_rec","count_no" };
-        int[] to = new int[] { R.id.dateRec, R.id.count_record};
+        String[] from = new String[] {"data_rec","count_no","count_yes" };
+        int[] to = new int[] { R.id.dateRec, R.id.countRec,R.id.countYesRec};
 
         mServiceBtn = (Button) findViewById(R.id.start_btn);
         mServiceBtn.setOnClickListener(this);
