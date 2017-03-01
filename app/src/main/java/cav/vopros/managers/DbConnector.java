@@ -1,6 +1,7 @@
 package cav.vopros.managers;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -29,6 +30,36 @@ public class DbConnector {
         }
     }
 
+    public void insertRec(Boolean no,Boolean yes){
+        open();
+
+        close();
+    }
+
+    public void updateRec(String data_rec,Boolean no,Boolean yes){
+        open();
+        String sql = null;
+        if (no){
+            sql="update statistic set count_no=count_no+1 where date_rec='"+data_rec+"'; select changes();";
+        }
+        if (yes) {
+            sql="update statistic set count_yes=count_yes+1 where date_rec='"+data_rec+"'; select changes();";
+        }
+
+        Cursor cursor = db.rawQuery(sql,null);
+        cursor.moveToFirst();
+        if (cursor.getInt(0)==0) {
+            // нет нифига нужно добавить
+            if (no) {
+                db.execSQL("insert into statistic (data_rec,count_no,count_yes) values (current_date,1,0)");
+            }
+            if (yes){
+                db.execSQL("insert into statistic (data_rec,count_no,count_yes) values (current_date,0,1)");
+            }
+        }
+        close();
+    }
+
 
 
     private class DBHelper extends SQLiteOpenHelper {
@@ -53,7 +84,7 @@ public class DbConnector {
             // создаем базу
             if (oldVersion<1){
                 db.execSQL("create table statistic (data_rec text not null primary key,"+
-                        "count_no integer,count_yes integer)");
+                        "count_no integer default 0,count_yes integer default 0)");
             }
 
         }
