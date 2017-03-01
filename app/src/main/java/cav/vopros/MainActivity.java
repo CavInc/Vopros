@@ -55,8 +55,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        testDate.add(new RecordModel("28.02.2017","V – 38 X – 42"));
-        testDate.add(new RecordModel("25.02.2017","V – 238 X – 142"));
+        //testDate.add(new RecordModel("28.02.2017","V – 38 X – 42"));
+        //testDate.add(new RecordModel("25.02.2017","V – 238 X – 142"));
 
         db = new DbConnector(this);
         db.open();
