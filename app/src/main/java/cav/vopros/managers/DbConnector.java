@@ -1,9 +1,13 @@
 package cav.vopros.managers;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
+
+import java.util.ArrayList;
 
 /**
  * Created by Kotov Alexandr on 28.02.17.
@@ -11,6 +15,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DbConnector {
     public final static int DB_VERSION = 1;
     public final static String DB_NAME = "vopros.db3";
+    private static final String TAG = "DB CONNECTOR";
 
 
     private SQLiteDatabase db;
@@ -38,31 +43,41 @@ public class DbConnector {
     }
 
     public void updateRec(String data_rec,Boolean no,Boolean yes){
+        //TODO криво както а все из за того что не отрабатывает несколько команд в одном запросе или я дурак
+        Log.d(TAG,"UPDATE REC");
         open();
         String sql = null;
         if (no){
-            sql="update statistic set count_no=count_no+1 where date_rec='"+data_rec+"'; select changes();";
+            sql="update statistic set count_no=count_no+1 where data_rec='"+data_rec+"';";
         }
         if (yes) {
-            sql="update statistic set count_yes=count_yes+1 where date_rec='"+data_rec+"'; select changes();";
+            sql="update statistic set count_yes=count_yes+1 where data_rec='"+data_rec+"';";
         }
+        db.execSQL(sql);
+        if (no){
+            sql="insert or ignore into statistic (data_rec,count_no,count_yes) values (current_date,1,0);";
+        }
+        if (yes){
+           sql="insert or ignore into statistic (data_rec,count_no,count_yes) values (current_date,0,1);";
+        }
+        db.execSQL(sql);
 
-        Cursor cursor = db.rawQuery(sql,null);
-        cursor.moveToFirst();
-        if (cursor.getInt(0)==0) {
-            // нет нифига нужно добавить
-            if (no) {
-                db.execSQL("insert into statistic (data_rec,count_no,count_yes) values (current_date,1,0)");
-            }
-            if (yes){
-                db.execSQL("insert into statistic (data_rec,count_no,count_yes) values (current_date,0,1)");
-            }
-        }
         close();
     }
 
     public Cursor getAllRecord(){
-        return db.query("statistic",new String[] {"data_rec","count_no","count_yes"},null,null,null,null,"data_rec DESC");
+        return db.query("statistic",new String[] {"_id","data_rec","count_no","count_yes"},null,null,null,null,"data_rec DESC");
+    }
+
+    public ArrayList<Integer> getCountStatistic(){
+        ArrayList<Integer> rec= new ArrayList<>();
+       // open();
+        Cursor cursor = db.rawQuery("select sum(count_no) as cno,sum(count_yes) as cyes from statistic;",null);
+        cursor.moveToFirst();
+        rec.add(cursor.getInt(cursor.getColumnIndex("cno")));
+        rec.add(cursor.getInt(cursor.getColumnIndex("cyes")));
+       // close();
+        return rec;
     }
 
 
@@ -88,7 +103,8 @@ public class DbConnector {
         private void updateData(SQLiteDatabase db,int oldVersion, int newVersion){
             // создаем базу
             if (oldVersion<1){
-                db.execSQL("create table statistic (data_rec text not null primary key,"+
+                db.execSQL("create table statistic (_id integer not null primary key autoincrement,"+
+                        " data_rec text not null unique ,"+
                         "count_no integer default 0,count_yes integer default 0)");
             }
 

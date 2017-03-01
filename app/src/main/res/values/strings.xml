@@ -6,5 +6,6 @@
 
     <string name="btn_start_message">Start Service</string>
     <string name="btn_end_message">Stop Service</string>
+    <string name="total_txt">Total</string>
 
 </resources>

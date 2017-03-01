@@ -4,4 +4,5 @@
     <string name="btn_end_message">Остановить задание</string>
     <string name="setting">Настройки</string>
     <string name="btn_start_message">Запустить задание</string>
+    <string name="total_txt">Всего</string>
 </resources>

@@ -1,8 +1,14 @@
 package cav.vopros;
 
 
+
+import android.content.Context;
 import android.content.Intent;
+import android.content.Loader;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -19,12 +25,13 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import cav.vopros.managers.DbConnector;
 import cav.vopros.services.TaskService;
 import cav.vopros.utils.ConstantManager;
 import cav.vopros.utils.RecordModel;
 import cav.vopros.utils.StatisticAdapter;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener,LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final String TAG = "MAIN";
     private Button mServiceBtn;
@@ -41,6 +48,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private SimpleCursorAdapter scAdapter;
 
+    private DbConnector db;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,9 +58,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         testDate.add(new RecordModel("28.02.2017","V – 38 X – 42"));
         testDate.add(new RecordModel("25.02.2017","V – 238 X – 142"));
 
+        db = new DbConnector(this);
+        db.open();
 
         // формируем столбцы сопоставления
-        String[] from = new String[] {"date_rec","count_no" };
+        String[] from = new String[] {"data_rec","count_no" };
         int[] to = new int[] { R.id.dateRec, R.id.count_record};
 
         mServiceBtn = (Button) findViewById(R.id.start_btn);
@@ -59,14 +70,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         mCountRecord = (TextView) findViewById(R.id.count_record);
 
+        scAdapter = new SimpleCursorAdapter(this, R.layout.list_item, null, from, to, 0);
+
         mListView = (ListView) findViewById(R.id.list);
 
-        ArrayAdapter adapter = new StatisticAdapter(this,R.layout.list_item,testDate);
-        mListView.setAdapter(adapter);
+        //ArrayAdapter adapter = new StatisticAdapter(this,R.layout.list_item,testDate);
+        //mListView.setAdapter(adapter);
+        mListView.setAdapter(scAdapter);
 
         if (savedInstanceState!=null) {
             mStatusService = savedInstanceState.getBoolean(ConstantManager.START_SERVICE_FLAG);
         }
+
+        // создаем лоадер для чтения данных
+        getSupportLoaderManager().initLoader(0, null, this);
+        //this.getSupportLoaderManager()
 
     }
 
@@ -78,8 +96,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onResume() {
         super.onResume();
+        ArrayList<Integer> all_count = db.getCountStatistic();
+        String s = getString(R.string.total_txt)+" \"V\" – "+Integer.toString(all_count.get(1))+"    "+
+                getString(R.string.total_txt)+" \"X\" – "+all_count.get(0).toString();
 
-        mCountRecord.setText("Всего \"V\" – 144  Всего \"X\" – 105");// TEST
+        //mCountRecord.setText("Всего \"V\" – 144  Всего \"X\" – 105");// TEST
+        mCountRecord.setText(s);
+        getSupportLoaderManager().getLoader(0).forceLoad();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (db!=null) {
+            db.close();
+        }
     }
 
     @Override
@@ -126,6 +157,38 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             startService(new Intent(this, TaskService.class));
         }
 
+    }
+
+    @Override
+    public android.support.v4.content.Loader<Cursor> onCreateLoader(int id, Bundle bundle) {
+        return new MyCursorLoader(this,db);
+    }
+
+    @Override
+    public void onLoadFinished(android.support.v4.content.Loader<Cursor> loader, Cursor cursor) {
+        scAdapter.swapCursor(cursor);
+    }
+
+    @Override
+    public void onLoaderReset(android.support.v4.content.Loader<Cursor> loader) {
+
+    }
+
+    static class MyCursorLoader extends CursorLoader {
+        DbConnector db;
+
+        public MyCursorLoader(Context context,DbConnector db) {
+            super(context);
+            this.db = db;
+
+        }
+
+        @Override
+        public Cursor loadInBackground() {
+            Log.d(TAG,"LOAD CURSURO");
+            Cursor cursor = db.getAllRecord();
+            return cursor;
+        }
     }
 
 

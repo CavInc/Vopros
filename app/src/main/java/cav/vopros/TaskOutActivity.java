@@ -39,6 +39,9 @@ public class TaskOutActivity extends Activity implements View.OnClickListener{
         mCancelBtn = (ImageButton) findViewById(R.id.out_cancel_btn);
         mOkBtn = (ImageButton) findViewById(R.id.out_ok_btn);
 
+        mOkBtn.setOnClickListener(this);
+        mCancelBtn.setOnClickListener(this);
+
         db = new DbConnector(this);
 
     }
