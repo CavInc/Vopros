@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.Loader;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.preference.PreferenceManager;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.widget.SimpleCursorAdapter;
@@ -78,13 +79,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //mListView.setAdapter(adapter);
         mListView.setAdapter(scAdapter);
 
+        mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        if (mPreferences!=null) {
+            Log.d(TAG,"Читаем настройки 2");
+            mStatusService = mPreferences.getBoolean(ConstantManager.START_SERVICE_FLAG,false);
+            Log.d(TAG,mPreferences.getString("message_txt",""));
+        }
+
         if (savedInstanceState!=null) {
+            Log.d(TAG,"Читаем настройки");
             mStatusService = savedInstanceState.getBoolean(ConstantManager.START_SERVICE_FLAG);
+            Log.d(TAG,savedInstanceState.getString("message_txt"));
+
         }
 
         // создаем лоадер для чтения данных
         getSupportLoaderManager().initLoader(0, null, this);
-        //this.getSupportLoaderManager()
+
 
     }
 
