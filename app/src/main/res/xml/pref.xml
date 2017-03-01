@@ -7,7 +7,8 @@
     <EditTextPreference
         android:key="time_delay"
         android:title="Задержка в минутах"
-        android:inputType="numberSigned"/>
+        android:inputType="numberSigned"
+        android:defaultValue="12"/>
     <RingtonePreference
         android:key="toast_ringtone"
         android:title="Звуковое уведомление"/>

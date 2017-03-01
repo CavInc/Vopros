@@ -2,11 +2,14 @@ package cav.vopros;
 
 
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.Loader;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.preference.Preference;
 import android.preference.PreferenceManager;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -27,6 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cav.vopros.managers.DbConnector;
+import cav.vopros.services.AlarmTaskReciver;
 import cav.vopros.services.TaskService;
 import cav.vopros.utils.ConstantManager;
 import cav.vopros.utils.RecordModel;
@@ -107,6 +111,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onResume() {
         super.onResume();
+        if (mStatusService) {
+            mServiceBtn.setText(getString(R.string.btn_end_message));
+        }else {
+            mServiceBtn.setText(getString(R.string.btn_start_message));
+        }
+
         ArrayList<Integer> all_count = db.getCountStatistic();
         String s = getString(R.string.total_txt)+" \"V\" – "+Integer.toString(all_count.get(1))+"    "+
                 getString(R.string.total_txt)+" \"X\" – "+all_count.get(0).toString();
@@ -148,7 +158,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.start_btn:
-                startStopService();
+                //startStopService();
+                startStopServiceAlartm();
                 break;
         }
     }
@@ -167,7 +178,39 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Log.d(TAG,"START");
             startService(new Intent(this, TaskService.class));
         }
+        saveStatusFlag();
+    }
 
+    private void startStopServiceAlartm(){
+        AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Intent intent=new Intent(this, AlarmTaskReciver.class);
+        PendingIntent pi= PendingIntent.getBroadcast(this,0, intent,0);
+       // am.cancel(pi);
+
+        if (mStatusService) {
+            // запущено
+            mStatusService = false;
+            mServiceBtn.setText(getString(R.string.btn_start_message));
+            Log.d(TAG,"STOP");
+            am.cancel(pi);
+
+        }else {
+            // остановлено
+            mStatusService = true;
+            mServiceBtn.setText(getString(R.string.btn_end_message));
+            Log.d(TAG,"START");
+            int period = Integer.parseInt(mPreferences.getString("time_delay","1"));
+            // типа скоката минут
+            am.setRepeating(AlarmManager.RTC_WAKEUP,System.currentTimeMillis(),1000*60*period,pi);
+
+        }
+        saveStatusFlag();
+    }
+
+    private void saveStatusFlag(){
+        SharedPreferences.Editor editor = mPreferences.edit();
+        editor.putBoolean(ConstantManager.START_SERVICE_FLAG,mStatusService);
+        editor.apply();
     }
 
     @Override

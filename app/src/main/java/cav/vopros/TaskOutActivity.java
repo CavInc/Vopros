@@ -58,5 +58,6 @@ public class TaskOutActivity extends Activity implements View.OnClickListener{
                 db.updateRec(dt,false,true);
                 break;
         }
+        finish();
     }
 }
