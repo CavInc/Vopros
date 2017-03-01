@@ -3,6 +3,7 @@ package cav.vopros;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -38,6 +39,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private List testDate = new ArrayList();
 
+    private SimpleCursorAdapter scAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +49,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         testDate.add(new RecordModel("28.02.2017","V – 38 X – 42"));
         testDate.add(new RecordModel("25.02.2017","V – 238 X – 142"));
 
+
+        // формируем столбцы сопоставления
+        String[] from = new String[] {"date_rec","count_no" };
+        int[] to = new int[] { R.id.dateRec, R.id.count_record};
 
         mServiceBtn = (Button) findViewById(R.id.start_btn);
         mServiceBtn.setOnClickListener(this);

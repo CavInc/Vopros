@@ -12,6 +12,7 @@ public class DbConnector {
     public final static int DB_VERSION = 1;
     public final static String DB_NAME = "vopros.db3";
 
+
     private SQLiteDatabase db;
     private DBHelper mDBHelper;
 
@@ -58,6 +59,10 @@ public class DbConnector {
             }
         }
         close();
+    }
+
+    public Cursor getAllRecord(){
+        return db.query("statistic",new String[] {"data_rec","count_no","count_yes"},null,null,null,null,"data_rec DESC");
     }
 
 
