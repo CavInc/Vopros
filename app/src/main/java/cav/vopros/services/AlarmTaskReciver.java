@@ -6,7 +6,9 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import cav.vopros.R;
@@ -15,6 +17,7 @@ import cav.vopros.TaskOutActivity;
 public class AlarmTaskReciver extends BroadcastReceiver {
     private static final String TAG = "ALARM RECIVER";
     private static final int NOTIFY_ID = 10001;
+    private SharedPreferences mPreferences;
 
     public AlarmTaskReciver() {
     }
@@ -28,6 +31,8 @@ public class AlarmTaskReciver extends BroadcastReceiver {
     }
 
     private void showNotification(Context context){
+        mPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+
         Intent notificationIntent = new Intent(context, TaskOutActivity.class);
         PendingIntent contentIntent = PendingIntent.getActivity(context,
                 0, notificationIntent,
@@ -45,7 +50,7 @@ public class AlarmTaskReciver extends BroadcastReceiver {
                 .setWhen(System.currentTimeMillis())
                 .setAutoCancel(true)
                 .setContentTitle("Важное сообщение!")
-                .setContentText("Здесть пока нифига нет "); // Текст уведомления;
+                .setContentText(mPreferences.getString("message_txt","")); // Текст уведомления;
 
         if (Build.VERSION.SDK_INT < 16) {
             notification = builder.getNotification(); // до API 16
