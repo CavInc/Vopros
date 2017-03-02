@@ -177,7 +177,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             mServiceBtn.setText(getString(R.string.btn_end_message));
             Log.d(TAG,"START");
             int period = Integer.parseInt(mPreferences.getString("time_delay","1"));
-            // типа скоката минут
+            // типа скоката минут  для правильного старта добавть вместо System.currentTimeMillis() System.currentTimeMillis()+period
             am.setRepeating(AlarmManager.RTC_WAKEUP,System.currentTimeMillis(),1000*60*period,pi);
 
         }
