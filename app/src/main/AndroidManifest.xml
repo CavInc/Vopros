@@ -22,12 +22,6 @@
         <activity android:name=".TaskOutActivity">
         </activity>
 
-        <service
-            android:name=".services.TaskService"
-            android:enabled="true"
-            android:exported="false">
-        </service>
-
         <receiver
             android:name=".services.AlarmTaskReciver"
             android:enabled="true"

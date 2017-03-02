@@ -6,10 +6,8 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.content.Loader;
 import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.preference.Preference;
 import android.preference.PreferenceManager;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -21,7 +19,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -31,10 +28,7 @@ import java.util.List;
 
 import cav.vopros.managers.DbConnector;
 import cav.vopros.services.AlarmTaskReciver;
-import cav.vopros.services.TaskService;
 import cav.vopros.utils.ConstantManager;
-import cav.vopros.utils.RecordModel;
-import cav.vopros.utils.StatisticAdapter;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener,LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -158,28 +152,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.start_btn:
-                //startStopService();
                 startStopServiceAlartm();
                 break;
         }
     }
 
-    private void startStopService() {
-        if (mStatusService) {
-            // запущено
-            mStatusService = false;
-            mServiceBtn.setText(getString(R.string.btn_start_message));
-            Log.d(TAG,"STOP");
-            stopService(new Intent(this,TaskService.class));
-        }else {
-            // остановлено
-            mStatusService = true;
-            mServiceBtn.setText(getString(R.string.btn_end_message));
-            Log.d(TAG,"START");
-            startService(new Intent(this, TaskService.class));
-        }
-        saveStatusFlag();
-    }
 
     private void startStopServiceAlartm(){
         AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
