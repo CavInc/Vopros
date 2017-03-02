@@ -12,6 +12,13 @@
     <RingtonePreference
         android:key="toast_ringtone"
         android:title="Звуковое уведомление"/>
+    <CheckBoxPreference
+        android:key="all_image_sd"
+        android:title="Выбор каталога"
+        android:summary="Выбор каталога иначе показываются галерея"/>
+    <Preference
+        android:key="path_to_img"
+        android:title="Каталог с изображениями"/>
 
 
 </PreferenceScreen>

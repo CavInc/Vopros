@@ -2,13 +2,14 @@ package cav.vopros;
 
 import android.app.Activity;
 
-import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
@@ -20,8 +21,12 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import cav.vopros.managers.DbConnector;
+import cav.vopros.utils.AspectRatioImageView;
+import cav.vopros.utils.ConstantManager;
+import cav.vopros.utils.OpenFileDialog;
 
 /**
  * Created by Kotov Alexandr on 28.02.17.
@@ -29,7 +34,6 @@ import cav.vopros.managers.DbConnector;
  */
 public class TaskOutActivity extends Activity implements View.OnClickListener{
 
-    private static final int REQUEST = 1020;
     private static final String TAG = "TASK ACTIVITY";
     private TextView mMessage;
     private ImageView mImageView;
@@ -39,11 +43,17 @@ public class TaskOutActivity extends Activity implements View.OnClickListener{
 
     private DbConnector db;
 
+    private int outImageIndex = 0;
+
+    private SharedPreferences mPreferences;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_out);
+
+        mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         mMessage = (TextView) findViewById(R.id.textView);
         mImageView = (ImageView) findViewById(R.id.out_img_v);
@@ -56,16 +66,23 @@ public class TaskOutActivity extends Activity implements View.OnClickListener{
 
         db = new DbConnector(this);
 
+        outImageIndex = mPreferences.getInt(ConstantManager.IMAGE_INDEX,0);
+
         //setImage();
-        getAllImage();
 
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        //getFileList();
-       // getStandartPictyre();
+        Log.d(TAG,"RESUME");
+        setImage();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.d(TAG,"START");
     }
 
     @Override
@@ -79,48 +96,34 @@ public class TaskOutActivity extends Activity implements View.OnClickListener{
             case R.id.out_ok_btn:
                 db.updateRec(dt,false,true);
                 break;
+            case R.id.open_dialog_btn:
+                OpenFileDialog fileDialog = new OpenFileDialog(this);
+                fileDialog.show();
+                break;
         }
-        finish();
+        saveIndexImage();
+        //finish();
     }
 
+    private void saveIndexImage(){
+        SharedPreferences.Editor editor = mPreferences.edit();
+        editor.putInt(ConstantManager.IMAGE_INDEX,outImageIndex);
+        editor.apply();
+    }
+
+    // устанавливает картинку
     private void setImage(){
-        Intent i = new Intent(Intent.ACTION_PICK);
-        i.setType("image/*");
-        startActivityForResult(i, REQUEST);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST && resultCode == RESULT_OK) {
-            Log.d(TAG, String.valueOf(data.getData()));
-            mImageView.setImageURI(data.getData());
+        List img = getAllImage();
+        if (outImageIndex>img.size()){
+            outImageIndex = 0;
         }
-        super.onActivityResult(requestCode, resultCode, data);
+        setPic((String) img.get(outImageIndex));
+        //mImageView.setImageURI(null);
+        //mImageView.setImageURI(Uri.fromFile(new File((String) img.get(outImageIndex))));
+        outImageIndex += 1;
     }
 
-    private void getStandartPictyre(){
-         File album = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-         File[] files = album.listFiles();
-        for (File f:files){
-            if (f.isDirectory()){
-                System.out.println("Folder: "+f);
-            }else if (f.isFile()){
-                System.out.println("File:" +f);
-            }
-        }
-    }
 
-    private void getFileList(){
-
-        File rootFolder = Environment.getExternalStorageDirectory();
-        File[] filesArray = rootFolder.listFiles();
-
-        System.out.println("файлов: " + filesArray.length);
-        for (File f: filesArray) {
-            if (f.isDirectory()) System.out.println("Folder: " + f);
-            else if (f.isFile()) System.out.println("File: " + f);
-        }
-    }
 
     // список файлов из указаного каталога
     public ArrayList<File> listFilesWithSubFolders(File dir) {
@@ -137,13 +140,15 @@ public class TaskOutActivity extends Activity implements View.OnClickListener{
     // масштабирование загружаемой картинки
     private void setPic(String mCurrentPhotoPath) {
         // Get the dimensions of the View
-        int targetW = mImageView.getWidth();
-        int targetH = mImageView.getHeight();
+        int targetW = 300; //mImageView.getWidth();
+        int targetH = 300;//mImageView.getHeight();
 
         // Get the dimensions of the bitmap
+        // Читаем с inJustDecodeBounds=true для определения размеров
         BitmapFactory.Options bmOptions = new BitmapFactory.Options();
         bmOptions.inJustDecodeBounds = true;
         BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
+
         int photoW = bmOptions.outWidth;
         int photoH = bmOptions.outHeight;
 
@@ -154,6 +159,7 @@ public class TaskOutActivity extends Activity implements View.OnClickListener{
         bmOptions.inJustDecodeBounds = false;
         bmOptions.inSampleSize = scaleFactor;
         bmOptions.inPurgeable = true;
+        bmOptions.inPreferredConfig = Bitmap.Config.RGB_565;
 
         Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
         mImageView.setImageBitmap(bitmap);
@@ -170,7 +176,8 @@ public class TaskOutActivity extends Activity implements View.OnClickListener{
      */
     private int columnIndex;
 
-    private void getAllImage(){
+    private List getAllImage(){
+        List<String> res= new ArrayList<>();
         // Set up an array of the Thumbnail Image ID column we want
         String[] projection = {MediaStore.Images.Media.DATA};
 
@@ -193,11 +200,13 @@ public class TaskOutActivity extends Activity implements View.OnClickListener{
             imagePath = cursor.getString(columnIndex);
             //Uri fx = Uri.withAppendedPath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,cursor.getString(columnIndex));
             //Log.d(TAG, String.valueOf(fx));
+            res.add(imagePath);
             Log.d(TAG,imagePath);
         }
         // Uri.parse("file:///sdcard/playcat.3gp");  // файл в корне карточки
-        mImageView.setImageURI(Uri.fromFile(new File(imagePath)));
-
+        //mImageView.setImageURI(Uri.fromFile(new File(imagePath)));
+        return res;
     }
+
 
 }
