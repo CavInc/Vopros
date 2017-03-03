@@ -144,6 +144,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (item.getItemId()) {
             case R.id.menu_setting:
                 // TODO переделать на фрагмент
+                //Intent intent = new Intent(this,SettingActivty.class);
+
                 startActivity(new Intent(this,SettingActivty.class));
                 break;
         }

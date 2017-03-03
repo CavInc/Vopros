@@ -33,6 +33,8 @@ public class AlarmTaskReciver extends BroadcastReceiver {
         showNotification(context);
 
     }
+    //http://developer.alexanderklimov.ru/android/notification.php
+    http://startandroid.ru/ru/uroki/vse-uroki-spiskom/164-urok-99-service-uvedomlenija-notifications.html
 
     private void showNotification(Context context){
         mPreferences = PreferenceManager.getDefaultSharedPreferences(context);
@@ -49,6 +51,7 @@ public class AlarmTaskReciver extends BroadcastReceiver {
         Notification notification;
 
         Notification.Builder builder = new Notification.Builder(context);
+
         builder.setContentIntent(contentIntent)
                 .setSmallIcon(R.drawable.ic_announcement_black_24dp)
                 .setTicker("Гляньте чего у меня есть !!!!")
@@ -57,6 +60,9 @@ public class AlarmTaskReciver extends BroadcastReceiver {
                 .setContentTitle("Важное сообщение!")
                 .setSound(Uri.parse(rington))
                 .setContentText(mPreferences.getString("message_txt","")); // Текст уведомления;
+
+
+
 
         if (Build.VERSION.SDK_INT < 16) {
             notification = builder.getNotification(); // до API 16

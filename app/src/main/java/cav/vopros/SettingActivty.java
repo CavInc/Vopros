@@ -14,12 +14,14 @@ import cav.vopros.utils.OpenFileDialog;
  *
  */
 public class SettingActivty extends PreferenceActivity {
+    private Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //TODO переделать потом на фрагмент
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.pref);
+
         Preference opendialog = (Preference) findPreference("path_to_img");
         opendialog.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override

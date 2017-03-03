@@ -18,7 +18,8 @@
         android:summary="Выбор каталога иначе показываются галерея"/>
     <Preference
         android:key="path_to_img"
-        android:title="Каталог с изображениями"/>
+        android:title="Каталог с изображениями"
+        android:dependency="all_image_sd"/>
 
 
 </PreferenceScreen>
