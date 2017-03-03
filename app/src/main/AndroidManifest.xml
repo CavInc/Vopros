@@ -23,7 +23,7 @@
             android:label="Settings">
         </activity>
         <activity android:name=".TaskOutActivity"
-           >
+           android:theme="@style/Theme.AppCompat.Light.Dialog">
         </activity>
 
         <receiver

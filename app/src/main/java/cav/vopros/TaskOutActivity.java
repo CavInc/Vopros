@@ -14,8 +14,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Display;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.io.File;
@@ -76,6 +78,10 @@ public class TaskOutActivity extends AppCompatActivity implements View.OnClickLi
         //setImage();
         Display display = getWindowManager().getDefaultDisplay();
         mScreenWidth = display.getWidth();
+
+        LinearLayout.LayoutParams  imageParams = (LinearLayout.LayoutParams) mImageView.getLayoutParams();
+        imageParams.width = mScreenWidth-100;
+
     }
 
     @Override
