@@ -1,6 +1,5 @@
 package cav.vopros;
 
-import android.app.Activity;
 
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -11,7 +10,9 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Display;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -32,7 +33,7 @@ import cav.vopros.utils.OpenFileDialog;
  * Created by Kotov Alexandr on 28.02.17.
  *
  */
-public class TaskOutActivity extends Activity implements View.OnClickListener{
+public class TaskOutActivity extends AppCompatActivity implements View.OnClickListener{
 
     private static final String TAG = "TASK ACTIVITY";
     private TextView mMessage;
@@ -46,6 +47,8 @@ public class TaskOutActivity extends Activity implements View.OnClickListener{
     private int outImageIndex = 0;
 
     private SharedPreferences mPreferences;
+
+    private int mScreenWidth;
 
 
     @Override
@@ -68,8 +71,11 @@ public class TaskOutActivity extends Activity implements View.OnClickListener{
 
         outImageIndex = mPreferences.getInt(ConstantManager.IMAGE_INDEX,0);
 
-        //setImage();
+        mMessage.setText(mPreferences.getString("message_txt",""));
 
+        //setImage();
+        Display display = getWindowManager().getDefaultDisplay();
+        mScreenWidth = display.getWidth();
     }
 
     @Override
@@ -77,12 +83,6 @@ public class TaskOutActivity extends Activity implements View.OnClickListener{
         super.onResume();
         Log.d(TAG,"RESUME");
         setImage();
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        Log.d(TAG,"START");
     }
 
     @Override
@@ -96,13 +96,15 @@ public class TaskOutActivity extends Activity implements View.OnClickListener{
             case R.id.out_ok_btn:
                 db.updateRec(dt,false,true);
                 break;
+            /*
             case R.id.open_dialog_btn:
                 OpenFileDialog fileDialog = new OpenFileDialog(this);
                 fileDialog.show();
                 break;
+                */
         }
         saveIndexImage();
-        //finish();
+        finish();
     }
 
     private void saveIndexImage(){
@@ -140,8 +142,8 @@ public class TaskOutActivity extends Activity implements View.OnClickListener{
     // масштабирование загружаемой картинки
     private void setPic(String mCurrentPhotoPath) {
         // Get the dimensions of the View
-        int targetW = 300; //mImageView.getWidth();
-        int targetH = 300;//mImageView.getHeight();
+        int targetW = mScreenWidth-100;//mImageView.getWidth();
+        int targetH = 300;// mImageView.getHeight();
 
         // Get the dimensions of the bitmap
         // Читаем с inJustDecodeBounds=true для определения размеров

@@ -12,6 +12,7 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.widget.SimpleCursorAdapter;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -83,14 +84,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             mStatusService = mPreferences.getBoolean(ConstantManager.START_SERVICE_FLAG,false);
             Log.d(TAG,mPreferences.getString("message_txt",""));
         }
-
+/*
         if (savedInstanceState!=null) {
             Log.d(TAG,"Читаем настройки");
             mStatusService = savedInstanceState.getBoolean(ConstantManager.START_SERVICE_FLAG);
             Log.d(TAG,savedInstanceState.getString("message_txt"));
 
         }
-
+*/
+        setupBar();
         // создаем лоадер для чтения данных
         getSupportLoaderManager().initLoader(0, null, this);
 
@@ -98,7 +100,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void setupBar(){
-
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
     }
 

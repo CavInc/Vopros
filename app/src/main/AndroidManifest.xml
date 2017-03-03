@@ -22,7 +22,8 @@
             android:name=".SettingActivty"
             android:label="Settings">
         </activity>
-        <activity android:name=".TaskOutActivity">
+        <activity android:name=".TaskOutActivity"
+           >
         </activity>
 
         <receiver

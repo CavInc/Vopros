@@ -2,20 +2,25 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
               android:layout_width="match_parent"
-              android:layout_height="match_parent">
+              android:layout_height="match_parent"
+              android:layout_marginLeft="16dp"
+              android:layout_marginRight="16dp">
 
     <ImageView
         android:id="@+id/out_img_v"
         android:layout_width="match_parent"
         android:layout_height="300dp"
+        android:layout_marginTop="8dp"
         android:scaleType="centerCrop"
-        android:adjustViewBounds="true"/>
+        android:adjustViewBounds="true"
+        />
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="А тут будут картинка сообщение и кнопочки"
         android:id="@+id/textView"
+        android:gravity="center_horizontal"
         android:layout_gravity="center_horizontal"/>
 
     <LinearLayout
@@ -27,19 +32,16 @@
             android:id="@+id/out_cancel_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:padding="16dp"
             android:src="@drawable/ic_close_black_24dp"
             android:layout_weight="1"/>
         <ImageButton
             android:id="@+id/out_ok_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:padding="16dp"
             android:src="@drawable/ic_check_black_24dp"
             android:layout_weight="1"/>
     </LinearLayout>
-    <Button
-        android:id="@+id/open_dialog_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="ОКНО ДИАЛОГА"
-        android:onClick="onClick"/>
+
 </LinearLayout>
