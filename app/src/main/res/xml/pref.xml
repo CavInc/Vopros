@@ -2,11 +2,11 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <EditTextPreference
         android:key="message_txt"
-        android:title="Тескс напоминания"
-        android:summary="Tекст напоминания епта"/>
+        android:title="@string/pref_message_title"
+        android:summary="Tекст напоминания для пользователя"/>
     <EditTextPreference
         android:key="time_delay"
-        android:title="Задержка в минутах"
+        android:title="@string/pre_time_delay"
         android:inputType="numberSigned"
         android:defaultValue="12"/>
     <RingtonePreference

@@ -5,4 +5,6 @@
     <string name="setting">Настройки</string>
     <string name="btn_start_message">Запустить задание</string>
     <string name="total_txt">Всего</string>
+    <string name="pref_message_title">Текст напоминания</string>
+    <string name="pre_time_delay">Задержка в минутах</string>
 </resources>

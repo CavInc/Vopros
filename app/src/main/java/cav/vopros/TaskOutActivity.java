@@ -122,13 +122,15 @@ public class TaskOutActivity extends AppCompatActivity implements View.OnClickLi
     // устанавливает картинку
     private void setImage(){
         List img = getAllImage();
-        if (outImageIndex>img.size()){
-            outImageIndex = 0;
+        if (img.size()!=0) {
+            if (outImageIndex > img.size()) {
+                outImageIndex = 0;
+            }
+            setPic((String) img.get(outImageIndex));
+            //mImageView.setImageURI(null);
+            //mImageView.setImageURI(Uri.fromFile(new File((String) img.get(outImageIndex))));
+            outImageIndex += 1;
         }
-        setPic((String) img.get(outImageIndex));
-        //mImageView.setImageURI(null);
-        //mImageView.setImageURI(Uri.fromFile(new File((String) img.get(outImageIndex))));
-        outImageIndex += 1;
     }
 
 

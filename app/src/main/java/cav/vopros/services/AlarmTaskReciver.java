@@ -34,7 +34,7 @@ public class AlarmTaskReciver extends BroadcastReceiver {
 
     }
     //http://developer.alexanderklimov.ru/android/notification.php
-    http://startandroid.ru/ru/uroki/vse-uroki-spiskom/164-urok-99-service-uvedomlenija-notifications.html
+    //http://startandroid.ru/ru/uroki/vse-uroki-spiskom/164-urok-99-service-uvedomlenija-notifications.html
 
     private void showNotification(Context context){
         mPreferences = PreferenceManager.getDefaultSharedPreferences(context);
