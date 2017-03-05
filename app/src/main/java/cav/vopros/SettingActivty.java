@@ -22,18 +22,34 @@ public class SettingActivty extends PreferenceActivity {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.pref);
 
+        mContext = (Context) this;
+
         Preference opendialog = (Preference) findPreference("path_to_img");
+
         opendialog.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 Toast.makeText(getBaseContext(),
                         "The custom preference has been clicked",
                         Toast.LENGTH_LONG).show();
-                OpenFileDialog fileDialog = new OpenFileDialog(getBaseContext());
+
+                OpenFileDialog fileDialog = new OpenFileDialog(mContext);
                 fileDialog.show();
                 return true;
             }
         });
+
+        /*
+        opendialog.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                Toast.makeText(getBaseContext(),
+                        "The custom preference has been clicked"+newValue,
+                        Toast.LENGTH_LONG).show();
+                return true;
+            }
+        });
+        */
 
     }
 }
