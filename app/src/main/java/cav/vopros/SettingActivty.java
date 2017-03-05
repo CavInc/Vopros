@@ -38,4 +38,5 @@ public class SettingActivty extends PreferenceActivity {
     }
     //http://1-vopros-1-otvet.ru/how-to-get-time-from-timepicker-dialog-to-preference-activity-33969293/
     //http://ru.androids.help/q21986
+    //http://androiddocs.ru/preferenceactivity-aktiviti-s-nastrojkami/
 }
