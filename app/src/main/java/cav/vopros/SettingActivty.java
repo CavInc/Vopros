@@ -29,27 +29,13 @@ public class SettingActivty extends PreferenceActivity {
         opendialog.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                Toast.makeText(getBaseContext(),
-                        "The custom preference has been clicked",
-                        Toast.LENGTH_LONG).show();
-
                 OpenFileDialog fileDialog = new OpenFileDialog(mContext);
                 fileDialog.show();
                 return true;
             }
         });
 
-        /*
-        opendialog.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                Toast.makeText(getBaseContext(),
-                        "The custom preference has been clicked"+newValue,
-                        Toast.LENGTH_LONG).show();
-                return true;
-            }
-        });
-        */
-
     }
+    //http://1-vopros-1-otvet.ru/how-to-get-time-from-timepicker-dialog-to-preference-activity-33969293/
+    //http://ru.androids.help/q21986
 }
