@@ -2,14 +2,18 @@ package cav.vopros;
 
 
 
+import android.Manifest;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.preference.PreferenceManager;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.app.ActionBar;
@@ -34,6 +38,7 @@ import cav.vopros.utils.ConstantManager;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener,LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final String TAG = "MAIN";
+    private static final int PERMISSION_REQUEST_CODE = 122;
     private Button mServiceBtn;
     private TextView mCountRecord;
 
@@ -121,6 +126,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //mCountRecord.setText("Всего \"V\" – 144  Всего \"X\" – 105");// TEST
         mCountRecord.setText(s);
         getSupportLoaderManager().getLoader(0).forceLoad();
+
+        if (ContextCompat.checkSelfPermission(this,Manifest.permission.READ_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED) {
+           ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},PERMISSION_REQUEST_CODE);
+        }
     }
 
     @Override
@@ -129,6 +139,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (db!=null) {
             db.close();
         }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (requestCode == PERMISSION_REQUEST_CODE && grantResults.length == 1) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // если получили права
+            }
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     @Override
