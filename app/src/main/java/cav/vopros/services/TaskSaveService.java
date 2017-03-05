@@ -19,6 +19,9 @@ public class TaskSaveService extends Service {
     private static final String TAG = "TASKSEVISE";
     private DbConnector db;
 
+    private int period = 0;
+
+
     public TaskSaveService() {
         db = new DbConnector(this);
     }
@@ -35,6 +38,7 @@ public class TaskSaveService extends Service {
         closeNotification();
         Log.d(TAG,"action :"+intent.getAction());
         Log.d(TAG,"content :"+intent.getBooleanExtra("mode",false));
+        period = intent.getIntExtra(ConstantManager.ACTION_PERIOD,12);
         new WorkDB(intent.getBooleanExtra("mode",false)).execute();
         return START_NOT_STICKY;
     }
@@ -57,12 +61,15 @@ public class TaskSaveService extends Service {
         protected Void doInBackground(Void... params) {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             String dt = sdf.format(new Date());
+            /*
             //TODO переделать на 1 строку без условия
             if (mode) {
                 db.updateRec(dt, false, true);
             }else {
                 db.updateRec(dt, true, false);
             }
+            */
+            db.updateRec(dt,!mode,mode);
             return null;
         }
 
@@ -70,6 +77,7 @@ public class TaskSaveService extends Service {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             Log.d(TAG,"STOP SERVICE");
+           // Func.startStopServiceAlartm(getBaseContext(),true,period);
             stopSelf();
         }
     }

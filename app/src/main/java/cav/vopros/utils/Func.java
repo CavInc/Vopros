@@ -44,7 +44,7 @@ public class Func {
             cursor.moveToPosition(i);
             imagePath = cursor.getString(columnIndex);
             res.add(imagePath);
-            Log.d("FUNC",imagePath);
+           // Log.d("FUNC",imagePath);
         }
         return res;
     }
@@ -56,8 +56,10 @@ public class Func {
         if (modeService){
 // типа скоката минут  для правильного старта добавть вместо System.currentTimeMillis() System.currentTimeMillis()+period
             am.setRepeating(AlarmManager.RTC_WAKEUP,System.currentTimeMillis(),1000*60*period,pi);
+            Log.d("FUNC","START ALARM FUNC");
         }else {
             am.cancel(pi);
+            Log.d("FUNC","STOP ALARM FUNC");
         }
     }
 
@@ -67,6 +69,7 @@ public class Func {
         editor.apply();
     }
 
+    @SuppressWarnings({"deprecation"})
     public static Bitmap getPicSize(String mCurrentPhotoPath){
         int targetW = 400;
         int targetH = 300;

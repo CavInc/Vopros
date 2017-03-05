@@ -36,8 +36,8 @@ public class AlarmTaskReciver extends BroadcastReceiver {
        // throw new UnsupportedOperationException("Not yet implemented");
         Log.d(TAG,"START ALARM RESIVER");
         //showNotification(context);
+       // Func.startStopServiceAlartm(context,false,0);
         showNotif2(context);
-
     }
     //http://developer.alexanderklimov.ru/android/notification.php
     //http://startandroid.ru/ru/uroki/vse-uroki-spiskom/164-urok-99-service-uvedomlenija-notifications.html
@@ -109,6 +109,7 @@ public class AlarmTaskReciver extends BroadcastReceiver {
 
     private void showNotif2(Context context){
         mPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        int period = Integer.parseInt(mPreferences.getString("time_delay","1"));
         String rington = mPreferences.getString("toast_ringtone","");
 
         NotificationManager notificationManager = (NotificationManager) context
@@ -126,16 +127,27 @@ public class AlarmTaskReciver extends BroadcastReceiver {
                     0, intent,
                     PendingIntent.FLAG_CANCEL_CURRENT);
 
+            builder.setContentIntent(contentIntent)
+                    .setSmallIcon(R.drawable.ic_announcement_black_24dp)
+                    .setTicker("Гляньте чего у меня есть !!!!")
+                    .setWhen(System.currentTimeMillis())
+                    .setAutoCancel(true)
+                    .setContentTitle("Важное сообщение!")
+                    .setSound(Uri.parse(rington))
+                    .setContentText(mPreferences.getString("message_txt", "")); // Текст уведомления;
+            notification = builder.getNotification(); // до API 16
 
         } else {
             Intent intent = new Intent(context,TaskSaveService.class);
-            intent.setAction("cancel");
+            intent.setAction(ConstantManager.ACTION_CANCEL);
             intent.putExtra("mode",false);
+            intent.putExtra(ConstantManager.ACTION_PERIOD,period);
             PendingIntent pi = PendingIntent.getService(context,0,intent,PendingIntent.FLAG_CANCEL_CURRENT);
 
             Intent intentOk = new Intent(context,TaskSaveService.class);
-            intentOk.setAction("ok");
+            intentOk.setAction(ConstantManager.ACTION_OK);
             intentOk.putExtra("mode",true);
+            intent.putExtra(ConstantManager.ACTION_PERIOD,period);
             PendingIntent piOk = PendingIntent.getService(context,1,intentOk,PendingIntent.FLAG_CANCEL_CURRENT);
 
             int index = mPreferences.getInt(ConstantManager.IMAGE_INDEX,0);
