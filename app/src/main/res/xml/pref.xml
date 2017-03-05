@@ -11,7 +11,8 @@
         android:defaultValue="12"/>
     <RingtonePreference
         android:key="toast_ringtone"
-        android:title="Звуковое уведомление"/>
+        android:title="Звуковое уведомление"
+        android:ringtoneType="notification"/>
     <CheckBoxPreference
         android:key="all_image_sd"
         android:title="Выбор каталога"

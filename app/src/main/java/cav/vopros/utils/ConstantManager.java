@@ -9,4 +9,6 @@ public interface ConstantManager {
     String START_SERVICE_FLAG = "START_SERVICE_FLAG";
 
     String IMAGE_INDEX = "IMAGE_INDEX";
+
+    final int NOTIFY_ID = 10001;
 }

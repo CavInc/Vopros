@@ -123,7 +123,7 @@ public class TaskOutActivity extends AppCompatActivity implements View.OnClickLi
     private void setImage(){
         List img = getAllImage();
         if (img.size()!=0) {
-            if (outImageIndex > img.size()) {
+            if (outImageIndex >= img.size()) {
                 outImageIndex = 0;
             }
             setPic((String) img.get(outImageIndex));
@@ -192,11 +192,15 @@ public class TaskOutActivity extends AppCompatActivity implements View.OnClickLi
         String[] projection = {MediaStore.Images.Media.DATA};
 
 // Create the cursor pointing to the SDCard
+        /*
         cursor = managedQuery( MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
                 projection, // Which columns to return
                 null,       // Return all rows
                 null,
                 null);
+                */
+
+        cursor = android.provider.MediaStore.Images.Media.query(getContentResolver(),MediaStore.Images.Media.EXTERNAL_CONTENT_URI,projection);
         // Get the column index of the Thumbnails Image ID
         //columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media._ID);
         columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);

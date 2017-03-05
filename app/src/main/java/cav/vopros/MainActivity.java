@@ -34,6 +34,7 @@ import java.util.List;
 import cav.vopros.managers.DbConnector;
 import cav.vopros.services.AlarmTaskReciver;
 import cav.vopros.utils.ConstantManager;
+import cav.vopros.utils.Func;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener,LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -168,6 +169,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 startActivity(new Intent(this,SettingActivty.class));
                 break;
+            case R.id.home:
+                finish();
+                break;
         }
 
         return super.onOptionsItemSelected(item);
@@ -184,9 +188,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
     private void startStopServiceAlartm(){
-        AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        Intent intent=new Intent(this, AlarmTaskReciver.class);
-        PendingIntent pi= PendingIntent.getBroadcast(this,0, intent,0);
+       // AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+       // Intent intent=new Intent(this, AlarmTaskReciver.class);
+       // PendingIntent pi= PendingIntent.getBroadcast(this,0, intent,0);
+
        // am.cancel(pi);
 
         if (mStatusService) {
@@ -194,7 +199,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             mStatusService = false;
             mServiceBtn.setText(getString(R.string.btn_start_message));
             Log.d(TAG,"STOP");
-            am.cancel(pi);
+            //am.cancel(pi);
+            Func.startStopServiceAlartm(this,false,0);
 
         }else {
             // остановлено
@@ -203,8 +209,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Log.d(TAG,"START");
             int period = Integer.parseInt(mPreferences.getString("time_delay","1"));
             // типа скоката минут  для правильного старта добавть вместо System.currentTimeMillis() System.currentTimeMillis()+period
-            am.setRepeating(AlarmManager.RTC_WAKEUP,System.currentTimeMillis(),1000*60*period,pi);
-
+            //am.setRepeating(AlarmManager.RTC_WAKEUP,System.currentTimeMillis(),1000*60*period,pi);
+            Func.startStopServiceAlartm(this,true,period);
         }
         saveStatusFlag();
     }

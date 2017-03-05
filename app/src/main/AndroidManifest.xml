@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="cav.vopros">
+<manifest package="cav.vopros"
+          xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
@@ -10,8 +10,9 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity"
-                  android:screenOrientation="portrait">
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -22,8 +23,9 @@
             android:name=".SettingActivty"
             android:label="Settings">
         </activity>
-        <activity android:name=".TaskOutActivity"
-           android:theme="@style/Theme.AppCompat.Light.Dialog">
+        <activity
+            android:name=".TaskOutActivity"
+            android:theme="@style/Theme.AppCompat.Light.Dialog">
         </activity>
 
         <receiver
@@ -31,6 +33,12 @@
             android:enabled="true"
             android:exported="true">
         </receiver>
+
+        <service
+            android:name=".services.TaskSaveService"
+            android:enabled="true"
+            android:exported="false">
+        </service>
     </application>
 
 </manifest>
