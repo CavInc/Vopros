@@ -80,9 +80,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         if (mPreferences!=null) {
-            Log.d(TAG,"Читаем настройки 2");
             mStatusService = mPreferences.getBoolean(ConstantManager.START_SERVICE_FLAG,false);
-            Log.d(TAG,mPreferences.getString("message_txt",""));
         }
 
         setupBar();
@@ -194,7 +192,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             mStatusService = true;
             mServiceBtn.setText(getString(R.string.btn_end_message));
             Log.d(TAG,"START");
-            int period = Integer.parseInt(mPreferences.getString("time_delay","1"));
+            int period = Integer.parseInt(mPreferences.getString("time_delay","12"));
             // типа скоката минут  для правильного старта добавть вместо System.currentTimeMillis() System.currentTimeMillis()+period
             //am.setRepeating(AlarmManager.RTC_WAKEUP,System.currentTimeMillis(),1000*60*period,pi);
             Func.startStopServiceAlartm(this,true,period);

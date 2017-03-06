@@ -42,10 +42,9 @@ public class SettingActivty extends PreferenceActivity  {
                             @Override
                             public void OnSelectedFile(String fileName) {
                                 Log.d("SETTING","SELECTED");
-                                Toast.makeText(getApplicationContext(), fileName, Toast.LENGTH_LONG).show();
+                                //Toast.makeText(getApplicationContext(), fileName, Toast.LENGTH_LONG).show();
                                 File x = new File(fileName);
                                 if (x.isFile()){
-                                    Log.d("SETTING",x.getPath());
                                     Log.d("SETTING",x.getParent());
                                     SharedPreferences pref =  PreferenceManager.getDefaultSharedPreferences(mContext);
                                     SharedPreferences.Editor editor = pref.edit();

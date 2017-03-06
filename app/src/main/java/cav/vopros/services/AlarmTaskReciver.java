@@ -86,9 +86,6 @@ public class AlarmTaskReciver extends BroadcastReceiver {
 
             int index = mPreferences.getInt(ConstantManager.IMAGE_INDEX,0);
 
-            Log.d(TAG, String.valueOf(mPreferences.getBoolean("all_image_sd",false)));
-            Log.d(TAG,mPreferences.getString("path_to_img",""));
-
             List img;
 
             if (mPreferences.getBoolean("all_image_sd",false) && mPreferences.getString("path_to_img","").length()!=0){

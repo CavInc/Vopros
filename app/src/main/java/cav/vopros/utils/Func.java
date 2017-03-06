@@ -68,7 +68,7 @@ public class Func {
         PendingIntent pi= PendingIntent.getBroadcast(context,0, intent,0);
         if (modeService){
 // типа скоката минут  для правильного старта добавть вместо System.currentTimeMillis() System.currentTimeMillis()+period
-            am.setRepeating(AlarmManager.RTC_WAKEUP,System.currentTimeMillis()+period,1000*60*period,pi);
+            am.setRepeating(AlarmManager.RTC_WAKEUP,System.currentTimeMillis()+1000*period,1000*60*period,pi);
             Log.d("FUNC","START ALARM FUNC");
         }else {
             am.cancel(pi);
