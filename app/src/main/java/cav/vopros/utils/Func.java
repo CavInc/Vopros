@@ -12,6 +12,7 @@ import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.util.Log;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,6 +48,18 @@ public class Func {
            // Log.d("FUNC",imagePath);
         }
         return res;
+    }
+
+    // список файлов из указаного каталога
+    public static List<File> listFilesWithSubFolders(File dir) {
+        List<File> files = new ArrayList<File>();
+        for (File file : dir.listFiles()) {
+            if (file.isDirectory())
+                files.addAll(listFilesWithSubFolders(file));
+            else
+                files.add(file);
+        }
+        return files;
     }
 
     public static void startStopServiceAlartm(Context context,boolean modeService,int period){

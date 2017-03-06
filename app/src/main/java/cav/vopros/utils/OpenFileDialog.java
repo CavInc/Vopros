@@ -46,6 +46,7 @@ public class OpenFileDialog  extends AlertDialog.Builder{
 
     public interface OpenDialogListener{
         public void OnSelectedFile(String fileName);
+       // public void OnSelectedDirectory(String directoryName);
     }
     private OpenDialogListener listener;
 

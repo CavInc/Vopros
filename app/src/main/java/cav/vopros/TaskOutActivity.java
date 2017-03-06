@@ -135,18 +135,6 @@ public class TaskOutActivity extends AppCompatActivity implements View.OnClickLi
 
 
 
-    // список файлов из указаного каталога
-    public ArrayList<File> listFilesWithSubFolders(File dir) {
-        ArrayList<File> files = new ArrayList<File>();
-        for (File file : dir.listFiles()) {
-            if (file.isDirectory())
-                files.addAll(listFilesWithSubFolders(file));
-            else
-                files.add(file);
-        }
-        return files;
-    }
-
     // масштабирование загружаемой картинки
     private void setPic(String mCurrentPhotoPath) {
         // Get the dimensions of the View

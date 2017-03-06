@@ -16,4 +16,8 @@ public interface ConstantManager {
 
 
     String ACTION_PERIOD = "ACTION_PERIOD";
+
+
+    String PREF_IMAGE_PATH = "path_to_img";
+
 }

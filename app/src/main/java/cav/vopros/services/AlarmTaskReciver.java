@@ -14,6 +14,7 @@ import android.os.Build;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import java.io.File;
 import java.util.List;
 
 import cav.vopros.R;
@@ -84,7 +85,18 @@ public class AlarmTaskReciver extends BroadcastReceiver {
             PendingIntent piOk = PendingIntent.getService(context,1,intentOk,PendingIntent.FLAG_CANCEL_CURRENT);
 
             int index = mPreferences.getInt(ConstantManager.IMAGE_INDEX,0);
-            List img = Func.getAllImage(context);
+
+            Log.d(TAG, String.valueOf(mPreferences.getBoolean("all_image_sd",false)));
+            Log.d(TAG,mPreferences.getString("path_to_img",""));
+
+            List img;
+
+            if (mPreferences.getBoolean("all_image_sd",false) && mPreferences.getString("path_to_img","").length()!=0){
+                img = Func.listFilesWithSubFolders(new File(mPreferences.getString("path_to_img","")));
+            }else {
+                img = Func.getAllImage(context);
+            }
+
             if (index>=img.size()){
                 index = 0;
             }
