@@ -97,7 +97,7 @@ public class AlarmTaskReciver extends BroadcastReceiver {
             if (index>=img.size()){
                 index = 0;
             }
-
+            //TODO будет ошибка если нет вобще ни одного графического файла
 
             builder.setSmallIcon(R.drawable.ic_announcement_black_24dp)
                     .setTicker("Гляньте чего у меня есть !!!!")

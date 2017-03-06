@@ -92,7 +92,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void setupBar(){
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
+        if (actionBar!=null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
 
     }
 
@@ -153,13 +155,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 //Intent intent = new Intent(this,SettingActivty.class);
 
                 startActivity(new Intent(this,SettingActivty.class));
-                break;
-            case R.id.home:
-                finish();
-                break;
+                return true;
+            case android.R.id.home:
+                onBackPressed();
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 
     @Override
