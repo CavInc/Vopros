@@ -7,4 +7,5 @@
     <string name="total_txt">Всего</string>
     <string name="pref_message_title">Текст напоминания</string>
     <string name="pre_time_delay">Задержка в минутах</string>
+    <string name="select_directory">Выбор каталога</string>
 </resources>

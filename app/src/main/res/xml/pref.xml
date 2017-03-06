@@ -15,7 +15,7 @@
         android:ringtoneType="notification"/>
     <CheckBoxPreference
         android:key="all_image_sd"
-        android:title="Выбор каталога"
+        android:title="@string/select_directory"
         android:summary="Выбор каталога иначе показываются галерея"/>
     <Preference
         android:key="path_to_img"

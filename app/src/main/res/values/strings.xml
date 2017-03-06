@@ -9,5 +9,6 @@
     <string name="total_txt">Total</string>
     <string name="pref_message_title">Text reminders</string>
     <string name="pre_time_delay">The delay in minutes</string>
+    <string name="select_directory">Selecting a directory</string>
 
 </resources>
