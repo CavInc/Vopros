@@ -50,8 +50,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private Boolean mStatusService = false;
 
-    private List testDate = new ArrayList();
-
     private SimpleCursorAdapter scAdapter;
 
     private DbConnector db;
@@ -60,9 +58,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        //testDate.add(new RecordModel("28.02.2017","V – 38 X – 42"));
-        //testDate.add(new RecordModel("25.02.2017","V – 238 X – 142"));
 
         db = new DbConnector(this);
         db.open();
@@ -80,8 +75,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         mListView = (ListView) findViewById(R.id.list);
 
-        //ArrayAdapter adapter = new StatisticAdapter(this,R.layout.list_item,testDate);
-        //mListView.setAdapter(adapter);
+
         mListView.setAdapter(scAdapter);
 
         mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -90,14 +84,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             mStatusService = mPreferences.getBoolean(ConstantManager.START_SERVICE_FLAG,false);
             Log.d(TAG,mPreferences.getString("message_txt",""));
         }
-/*
-        if (savedInstanceState!=null) {
-            Log.d(TAG,"Читаем настройки");
-            mStatusService = savedInstanceState.getBoolean(ConstantManager.START_SERVICE_FLAG);
-            Log.d(TAG,savedInstanceState.getString("message_txt"));
 
-        }
-*/
         setupBar();
         // создаем лоадер для чтения данных
         getSupportLoaderManager().initLoader(0, null, this);
@@ -124,7 +111,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         String s = getString(R.string.total_txt)+" \"V\" – "+Integer.toString(all_count.get(1))+"    "+
                 getString(R.string.total_txt)+" \"X\" – "+all_count.get(0).toString();
 
-        //mCountRecord.setText("Всего \"V\" – 144  Всего \"X\" – 105");// TEST
         mCountRecord.setText(s);
         getSupportLoaderManager().getLoader(0).forceLoad();
 
