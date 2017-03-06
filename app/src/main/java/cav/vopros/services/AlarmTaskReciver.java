@@ -34,7 +34,7 @@ public class AlarmTaskReciver extends BroadcastReceiver {
        // throw new UnsupportedOperationException("Not yet implemented");
         Log.d(TAG,"START ALARM RESIVER");
 
-       // Func.startStopServiceAlartm(context,false,0);
+        Func.startStopServiceAlartm(context,false,0);
         showNotification(context);
     }
     //http://developer.alexanderklimov.ru/android/notification.php
@@ -43,7 +43,7 @@ public class AlarmTaskReciver extends BroadcastReceiver {
 
     private void showNotification(Context context){
         mPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        int period = Integer.parseInt(mPreferences.getString("time_delay","1"));
+        int period = Integer.parseInt(mPreferences.getString(ConstantManager.PREF_TIME_DELAY,"12"));
         String rington = mPreferences.getString("toast_ringtone","");
 
         NotificationManager notificationManager = (NotificationManager) context
@@ -81,7 +81,7 @@ public class AlarmTaskReciver extends BroadcastReceiver {
             Intent intentOk = new Intent(context,TaskSaveService.class);
             intentOk.setAction(ConstantManager.ACTION_OK);
             intentOk.putExtra("mode",true);
-            intent.putExtra(ConstantManager.ACTION_PERIOD,period);
+            intentOk.putExtra(ConstantManager.ACTION_PERIOD,period);
             PendingIntent piOk = PendingIntent.getService(context,1,intentOk,PendingIntent.FLAG_CANCEL_CURRENT);
 
             int index = mPreferences.getInt(ConstantManager.IMAGE_INDEX,0);

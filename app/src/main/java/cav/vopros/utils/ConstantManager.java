@@ -11,7 +11,7 @@ public interface ConstantManager {
     String IMAGE_INDEX = "IMAGE_INDEX";
 
     final int NOTIFY_ID = 10001;
-    String ACTION_CANCEL = "ACTION_CANCLE";
+    String ACTION_CANCEL = "ACTION_CANCEL";
     String ACTION_OK = "ACTION_OK";
 
 
@@ -19,5 +19,6 @@ public interface ConstantManager {
 
 
     String PREF_IMAGE_PATH = "path_to_img";
+    String PREF_TIME_DELAY = "time_delay";
 
 }

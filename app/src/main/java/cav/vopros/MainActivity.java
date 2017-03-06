@@ -199,7 +199,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             mStatusService = true;
             mServiceBtn.setText(getString(R.string.btn_end_message));
             Log.d(TAG,"START");
-            int period = Integer.parseInt(mPreferences.getString("time_delay","12"));
+            int period = Integer.parseInt(mPreferences.getString(ConstantManager.PREF_TIME_DELAY,"12"));
             // типа скоката минут  для правильного старта добавть вместо System.currentTimeMillis() System.currentTimeMillis()+period
             //am.setRepeating(AlarmManager.RTC_WAKEUP,System.currentTimeMillis(),1000*60*period,pi);
             Func.startStopServiceAlartm(this,true,period);

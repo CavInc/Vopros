@@ -77,7 +77,8 @@ public class TaskSaveService extends Service {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             Log.d(TAG,"STOP SERVICE");
-           // Func.startStopServiceAlartm(getBaseContext(),true,period);
+            Log.d(TAG, "PERIOD :"+String.valueOf(period));
+            Func.startStopServiceAlartm(getBaseContext(),true,period);
             stopSelf();
         }
     }
