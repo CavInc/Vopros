@@ -7,5 +7,7 @@
     <string name="btn_start_message">Start Service</string>
     <string name="btn_end_message">Stop Service</string>
     <string name="total_txt">Total</string>
+    <string name="pref_message_title">Text reminders</string>
+    <string name="pre_time_delay">The delay in minutes</string>
 
 </resources>

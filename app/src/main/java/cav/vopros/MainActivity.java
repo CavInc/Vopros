@@ -2,14 +2,18 @@ package cav.vopros;
 
 
 
+import android.Manifest;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.preference.PreferenceManager;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.app.ActionBar;
@@ -30,10 +34,12 @@ import java.util.List;
 import cav.vopros.managers.DbConnector;
 import cav.vopros.services.AlarmTaskReciver;
 import cav.vopros.utils.ConstantManager;
+import cav.vopros.utils.Func;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener,LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final String TAG = "MAIN";
+    private static final int PERMISSION_REQUEST_CODE = 122;
     private Button mServiceBtn;
     private TextView mCountRecord;
 
@@ -44,8 +50,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private Boolean mStatusService = false;
 
-    private List testDate = new ArrayList();
-
     private SimpleCursorAdapter scAdapter;
 
     private DbConnector db;
@@ -54,9 +58,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        //testDate.add(new RecordModel("28.02.2017","V – 38 X – 42"));
-        //testDate.add(new RecordModel("25.02.2017","V – 238 X – 142"));
 
         db = new DbConnector(this);
         db.open();
@@ -74,24 +75,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         mListView = (ListView) findViewById(R.id.list);
 
-        //ArrayAdapter adapter = new StatisticAdapter(this,R.layout.list_item,testDate);
-        //mListView.setAdapter(adapter);
+
         mListView.setAdapter(scAdapter);
 
         mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         if (mPreferences!=null) {
-            Log.d(TAG,"Читаем настройки 2");
             mStatusService = mPreferences.getBoolean(ConstantManager.START_SERVICE_FLAG,false);
-            Log.d(TAG,mPreferences.getString("message_txt",""));
         }
-/*
-        if (savedInstanceState!=null) {
-            Log.d(TAG,"Читаем настройки");
-            mStatusService = savedInstanceState.getBoolean(ConstantManager.START_SERVICE_FLAG);
-            Log.d(TAG,savedInstanceState.getString("message_txt"));
 
-        }
-*/
         setupBar();
         // создаем лоадер для чтения данных
         getSupportLoaderManager().initLoader(0, null, this);
@@ -118,9 +109,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         String s = getString(R.string.total_txt)+" \"V\" – "+Integer.toString(all_count.get(1))+"    "+
                 getString(R.string.total_txt)+" \"X\" – "+all_count.get(0).toString();
 
-        //mCountRecord.setText("Всего \"V\" – 144  Всего \"X\" – 105");// TEST
         mCountRecord.setText(s);
         getSupportLoaderManager().getLoader(0).forceLoad();
+
+        if (ContextCompat.checkSelfPermission(this,Manifest.permission.READ_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED) {
+           ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},PERMISSION_REQUEST_CODE);
+        }
     }
 
     @Override
@@ -129,6 +124,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (db!=null) {
             db.close();
         }
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (requestCode == PERMISSION_REQUEST_CODE && grantResults.length == 1) {
+            if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                // если не получили права
+            }
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     @Override
@@ -144,7 +150,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (item.getItemId()) {
             case R.id.menu_setting:
                 // TODO переделать на фрагмент
+                //Intent intent = new Intent(this,SettingActivty.class);
+
                 startActivity(new Intent(this,SettingActivty.class));
+                break;
+            case R.id.home:
+                finish();
                 break;
         }
 
@@ -162,9 +173,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
     private void startStopServiceAlartm(){
-        AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        Intent intent=new Intent(this, AlarmTaskReciver.class);
-        PendingIntent pi= PendingIntent.getBroadcast(this,0, intent,0);
+       // AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+       // Intent intent=new Intent(this, AlarmTaskReciver.class);
+       // PendingIntent pi= PendingIntent.getBroadcast(this,0, intent,0);
+
        // am.cancel(pi);
 
         if (mStatusService) {
@@ -172,17 +184,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             mStatusService = false;
             mServiceBtn.setText(getString(R.string.btn_start_message));
             Log.d(TAG,"STOP");
-            am.cancel(pi);
+            //am.cancel(pi);
+            Func.startStopServiceAlartm(this,false,0);
 
         }else {
             // остановлено
             mStatusService = true;
             mServiceBtn.setText(getString(R.string.btn_end_message));
             Log.d(TAG,"START");
-            int period = Integer.parseInt(mPreferences.getString("time_delay","1"));
+            int period = Integer.parseInt(mPreferences.getString("time_delay","12"));
             // типа скоката минут  для правильного старта добавть вместо System.currentTimeMillis() System.currentTimeMillis()+period
-            am.setRepeating(AlarmManager.RTC_WAKEUP,System.currentTimeMillis(),1000*60*period,pi);
-
+            //am.setRepeating(AlarmManager.RTC_WAKEUP,System.currentTimeMillis(),1000*60*period,pi);
+            Func.startStopServiceAlartm(this,true,period);
         }
         saveStatusFlag();
     }

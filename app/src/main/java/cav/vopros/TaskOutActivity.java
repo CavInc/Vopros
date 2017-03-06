@@ -122,28 +122,18 @@ public class TaskOutActivity extends AppCompatActivity implements View.OnClickLi
     // устанавливает картинку
     private void setImage(){
         List img = getAllImage();
-        if (outImageIndex>img.size()){
-            outImageIndex = 0;
+        if (img.size()!=0) {
+            if (outImageIndex >= img.size()) {
+                outImageIndex = 0;
+            }
+            setPic((String) img.get(outImageIndex));
+            //mImageView.setImageURI(null);
+            //mImageView.setImageURI(Uri.fromFile(new File((String) img.get(outImageIndex))));
+            outImageIndex += 1;
         }
-        setPic((String) img.get(outImageIndex));
-        //mImageView.setImageURI(null);
-        //mImageView.setImageURI(Uri.fromFile(new File((String) img.get(outImageIndex))));
-        outImageIndex += 1;
     }
 
 
-
-    // список файлов из указаного каталога
-    public ArrayList<File> listFilesWithSubFolders(File dir) {
-        ArrayList<File> files = new ArrayList<File>();
-        for (File file : dir.listFiles()) {
-            if (file.isDirectory())
-                files.addAll(listFilesWithSubFolders(file));
-            else
-                files.add(file);
-        }
-        return files;
-    }
 
     // масштабирование загружаемой картинки
     private void setPic(String mCurrentPhotoPath) {
@@ -190,11 +180,15 @@ public class TaskOutActivity extends AppCompatActivity implements View.OnClickLi
         String[] projection = {MediaStore.Images.Media.DATA};
 
 // Create the cursor pointing to the SDCard
+        /*
         cursor = managedQuery( MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
                 projection, // Which columns to return
                 null,       // Return all rows
                 null,
                 null);
+                */
+
+        cursor = android.provider.MediaStore.Images.Media.query(getContentResolver(),MediaStore.Images.Media.EXTERNAL_CONTENT_URI,projection);
         // Get the column index of the Thumbnails Image ID
         //columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media._ID);
         columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);

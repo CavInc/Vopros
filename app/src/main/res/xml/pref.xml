@@ -2,23 +2,26 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <EditTextPreference
         android:key="message_txt"
-        android:title="Тескс напоминания"
-        android:summary="Tекст напоминания епта"/>
+        android:title="@string/pref_message_title"
+        android:summary="Tекст напоминания для пользователя"/>
     <EditTextPreference
         android:key="time_delay"
-        android:title="Задержка в минутах"
+        android:title="@string/pre_time_delay"
         android:inputType="numberSigned"
         android:defaultValue="12"/>
     <RingtonePreference
         android:key="toast_ringtone"
-        android:title="Звуковое уведомление"/>
+        android:title="Звуковое уведомление"
+        android:ringtoneType="notification"/>
     <CheckBoxPreference
         android:key="all_image_sd"
         android:title="Выбор каталога"
         android:summary="Выбор каталога иначе показываются галерея"/>
     <Preference
         android:key="path_to_img"
-        android:title="Каталог с изображениями"/>
+        android:title="Каталог с изображениями"
+        android:dependency="all_image_sd"
+        android:persistent="false"/>
 
 
 </PreferenceScreen>
