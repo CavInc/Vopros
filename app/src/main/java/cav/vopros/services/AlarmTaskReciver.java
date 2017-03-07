@@ -130,13 +130,12 @@ public class AlarmTaskReciver extends BroadcastReceiver {
             //        .bigPicture(BitmapFactory.decodeFile("/storage/emulated/0/DCIM/Camera/IMG_20170304_183610.jpg"))
             //        .setSummaryText(mPreferences.getString("message_txt", ""))
             //        .build();
-            //notification.flags |= Notification.FLAG_AUTO_CANCEL;
             notification = builder.build();
             notification.flags |= Notification.FLAG_AUTO_CANCEL;
 
         }
 
-        Func.saveStartAlarmTask(mPreferences,true);
+        //Func.saveStartAlarmTask(mPreferences,true);
 
         notificationManager.notify(ConstantManager.NOTIFY_ID, notification);
     }
