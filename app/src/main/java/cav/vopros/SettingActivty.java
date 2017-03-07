@@ -43,6 +43,7 @@ public class SettingActivty extends PreferenceActivity  {
                             public void OnSelectedFile(String fileName) {
                                 Log.d("SETTING","SELECTED");
                                 //Toast.makeText(getApplicationContext(), fileName, Toast.LENGTH_LONG).show();
+                                /*
                                 File x = new File(fileName);
                                 if (x.isFile()){
                                     Log.d("SETTING",x.getParent());
@@ -51,7 +52,17 @@ public class SettingActivty extends PreferenceActivity  {
                                     editor.putString(ConstantManager.PREF_IMAGE_PATH,x.getParent());
                                     editor.apply();
                                 }
+                                */
 
+                            }
+
+                            @Override
+                            public void OnSelectedDirectory(String directoryName) {
+                                //Toast.makeText(getApplicationContext(), directoryName, Toast.LENGTH_LONG).show();
+                                SharedPreferences pref =  PreferenceManager.getDefaultSharedPreferences(mContext);
+                                SharedPreferences.Editor editor = pref.edit();
+                                editor.putString(ConstantManager.PREF_IMAGE_PATH,directoryName);
+                                editor.apply();
                             }
                         });
                 fileDialog.show();

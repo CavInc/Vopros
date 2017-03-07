@@ -46,7 +46,7 @@ public class OpenFileDialog  extends AlertDialog.Builder{
 
     public interface OpenDialogListener{
         public void OnSelectedFile(String fileName);
-       // public void OnSelectedDirectory(String directoryName);
+        public void OnSelectedDirectory(String directoryName);
     }
     private OpenDialogListener listener;
 
@@ -60,7 +60,7 @@ public class OpenFileDialog  extends AlertDialog.Builder{
         super(context);
         title = createTitle(context);
         changeTitle();
-        LinearLayout linearLayout = createMainLayout(context);
+        final LinearLayout linearLayout = createMainLayout(context);
         linearLayout.addView(createBackItem(context));
         listView = createListView(context);
         linearLayout.addView(listView);
@@ -72,6 +72,7 @@ public class OpenFileDialog  extends AlertDialog.Builder{
                         if (selectedIndex > -1 && listener != null) {
                             listener.OnSelectedFile(listView.getItemAtPosition(selectedIndex).toString());
                         }
+                        listener.OnSelectedDirectory(title.getText().toString());
                     }
                 })
                 .setNegativeButton(android.R.string.cancel, null);

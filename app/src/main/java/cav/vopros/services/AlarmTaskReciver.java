@@ -84,10 +84,10 @@ public class AlarmTaskReciver extends BroadcastReceiver {
             intentOk.putExtra(ConstantManager.ACTION_PERIOD,period);
             PendingIntent piOk = PendingIntent.getService(context,1,intentOk,PendingIntent.FLAG_CANCEL_CURRENT);
 
-            Intent delIntent = new Intent(context,TaskSaveService.class);
-            delIntent.setAction(ConstantManager.ACTION_DEL);
-            delIntent.putExtra(ConstantManager.ACTION_PERIOD,period);
-            PendingIntent delPi = PendingIntent.getService(context,2,delIntent,PendingIntent.FLAG_CANCEL_CURRENT);
+            //Intent delIntent = new Intent(context,TaskSaveService.class);
+            //delIntent.setAction(ConstantManager.ACTION_DEL);
+            //delIntent.putExtra(ConstantManager.ACTION_PERIOD,period);
+            //PendingIntent delPi = PendingIntent.getService(context,2,delIntent,PendingIntent.FLAG_CANCEL_CURRENT);
 
             int index = mPreferences.getInt(ConstantManager.IMAGE_INDEX,0);
 
@@ -119,7 +119,7 @@ public class AlarmTaskReciver extends BroadcastReceiver {
                             //.bigPicture(BitmapFactory.decodeFile(String.valueOf(img.get(index))))
                            /* .setSummaryText(mPreferences.getString("message_txt", ""))*/)
                     .setOngoing(true)
-                    .setAutoCancel(true).setDeleteIntent(delPi);
+                    .setAutoCancel(true);
 
             index += 1;
             Func.saveIndexImage(mPreferences,index);
