@@ -38,8 +38,13 @@ public class TaskSaveService extends Service {
         closeNotification();
         Log.d(TAG,"action :"+intent.getAction());
         Log.d(TAG,"content :"+intent.getBooleanExtra("mode",false));
-        period = intent.getIntExtra(ConstantManager.ACTION_PERIOD,12);
-        new WorkDB(intent.getBooleanExtra("mode",false)).execute();
+        period = intent.getIntExtra(ConstantManager.ACTION_PERIOD, 12);
+        if (intent.getAction()!=ConstantManager.ACTION_DEL) {
+           new WorkDB(intent.getBooleanExtra("mode", false)).execute();
+        } else {
+            Func.startStopServiceAlartm(getBaseContext(),true,period);
+            stopSelf();
+        }
         return START_NOT_STICKY;
     }
 

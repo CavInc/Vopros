@@ -63,12 +63,12 @@ public class AlarmTaskReciver extends BroadcastReceiver {
 
             builder.setContentIntent(contentIntent)
                     .setSmallIcon(R.drawable.ic_announcement_black_24dp)
-                    .setTicker("Гляньте чего у меня есть !!!!")
+                    .setTicker("Важное сообщение!")
                     .setWhen(System.currentTimeMillis())
                     .setAutoCancel(true)
-                    .setContentTitle("Важное сообщение!")
-                    .setSound(Uri.parse(rington))
-                    .setContentText(mPreferences.getString("message_txt", "")); // Текст уведомления;
+                    .setContentTitle(mPreferences.getString("message_txt", ""))
+                    .setSound(Uri.parse(rington));
+                    //.setContentText(mPreferences.getString("message_txt", "")); // Текст уведомления;
             notification = builder.getNotification(); // до API 16
 
         } else {
@@ -83,6 +83,11 @@ public class AlarmTaskReciver extends BroadcastReceiver {
             intentOk.putExtra("mode",true);
             intentOk.putExtra(ConstantManager.ACTION_PERIOD,period);
             PendingIntent piOk = PendingIntent.getService(context,1,intentOk,PendingIntent.FLAG_CANCEL_CURRENT);
+
+            Intent delIntent = new Intent(context,TaskSaveService.class);
+            delIntent.setAction(ConstantManager.ACTION_DEL);
+            delIntent.putExtra(ConstantManager.ACTION_PERIOD,period);
+            PendingIntent delPi = PendingIntent.getService(context,2,delIntent,PendingIntent.FLAG_CANCEL_CURRENT);
 
             int index = mPreferences.getInt(ConstantManager.IMAGE_INDEX,0);
 
@@ -100,9 +105,10 @@ public class AlarmTaskReciver extends BroadcastReceiver {
             //TODO будет ошибка если нет вобще ни одного графического файла
 
             builder.setSmallIcon(R.drawable.ic_announcement_black_24dp)
-                    .setTicker("Гляньте чего у меня есть !!!!")
+                    .setTicker("Важное сообщение!")
                     .setWhen(System.currentTimeMillis())
-                    .setContentTitle("Важное сообщение!")
+                    //.setContentTitle("Важное сообщение!")
+                    .setContentTitle(mPreferences.getString("message_txt", ""))
                     .setSound(Uri.parse(rington))
                     .setContentText(mPreferences.getString("message_txt", ""))
                     .addAction(R.drawable.ic_close_black_24dp,"",pi)
@@ -111,8 +117,8 @@ public class AlarmTaskReciver extends BroadcastReceiver {
                             //.bigPicture(BitmapFactory.decodeFile("/storage/sdcard0/Img/0a76308d91fb8bb0.jpg"))
                             .bigPicture(Func.getPicSize(String.valueOf(img.get(index))))
                             //.bigPicture(BitmapFactory.decodeFile(String.valueOf(img.get(index))))
-                            .setSummaryText(mPreferences.getString("message_txt", "")))
-                    .setAutoCancel(true);
+                           /* .setSummaryText(mPreferences.getString("message_txt", ""))*/)
+                    .setAutoCancel(true).setDeleteIntent(delPi);
 
             index += 1;
             Func.saveIndexImage(mPreferences,index);
