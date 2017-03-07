@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.IBinder;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import java.text.SimpleDateFormat;
@@ -20,6 +21,8 @@ public class TaskSaveService extends Service {
     private DbConnector db;
 
     private int period = 0;
+
+    private boolean mServiceFlag = false;
 
 
     public TaskSaveService() {
@@ -38,6 +41,10 @@ public class TaskSaveService extends Service {
         closeNotification();
         Log.d(TAG,"action :"+intent.getAction());
         Log.d(TAG,"content :"+intent.getBooleanExtra("mode",false));
+        // установлен ли флаг запуска сервиса кнопкой
+        mServiceFlag = PreferenceManager.getDefaultSharedPreferences(getBaseContext())
+                .getBoolean(ConstantManager.START_SERVICE_FLAG,false);
+
         period = intent.getIntExtra(ConstantManager.ACTION_PERIOD, 12);
         if (intent.getAction()!=ConstantManager.ACTION_DEL) {
            new WorkDB(intent.getBooleanExtra("mode", false)).execute();
@@ -83,7 +90,7 @@ public class TaskSaveService extends Service {
             super.onPostExecute(aVoid);
             Log.d(TAG,"STOP SERVICE");
             Log.d(TAG, "PERIOD :"+String.valueOf(period));
-            Func.startStopServiceAlartm(getBaseContext(),true,period);
+            if (mServiceFlag) Func.startStopServiceAlartm(getBaseContext(),true,period);
             stopSelf();
         }
     }

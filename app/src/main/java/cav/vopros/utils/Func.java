@@ -53,11 +53,19 @@ public class Func {
     // список файлов из указаного каталога
     public static List<File> listFilesWithSubFolders(File dir) {
         List<File> files = new ArrayList<File>();
-        for (File file : dir.listFiles()) {
-            if (file.isDirectory())
-                files.addAll(listFilesWithSubFolders(file));
-            else
-                files.add(file);
+        try {
+            for (File file : dir.listFiles()) {
+                if (file.isDirectory())
+                    files.addAll(listFilesWithSubFolders(file));
+                else {
+                    if (file.getName().matches(".*\\.jpg")) {
+                        Log.d("FUNC","YES MATHC "+file.getName());
+                        files.add(file);
+                    }
+                }
+            }
+        } catch (NullPointerException e) {
+            Log.d("FUNC","NO LIST");
         }
         return files;
     }
