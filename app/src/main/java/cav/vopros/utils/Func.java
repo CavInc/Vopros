@@ -84,6 +84,13 @@ public class Func {
         editor.apply();
     }
 
+    // сохраняем флаг о том запуещен ли будильник
+    public static void saveStartAlarmTask(SharedPreferences pref,boolean flag){
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putBoolean(ConstantManager.START_ALARM_FLAG,flag);
+        editor.apply();
+    }
+
     @SuppressWarnings({"deprecation"})
     public static Bitmap getPicSize(String mCurrentPhotoPath){
         int targetW = 400;

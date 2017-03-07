@@ -23,4 +23,5 @@ public interface ConstantManager {
     String PREF_TIME_DELAY = "time_delay";
 
 
+    String START_ALARM_FLAG = "START_ALAGM_FLG";
 }

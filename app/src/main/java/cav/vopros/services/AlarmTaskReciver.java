@@ -118,6 +118,7 @@ public class AlarmTaskReciver extends BroadcastReceiver {
                             .bigPicture(Func.getPicSize(String.valueOf(img.get(index))))
                             //.bigPicture(BitmapFactory.decodeFile(String.valueOf(img.get(index))))
                            /* .setSummaryText(mPreferences.getString("message_txt", ""))*/)
+                    .setOngoing(true)
                     .setAutoCancel(true).setDeleteIntent(delPi);
 
             index += 1;
@@ -135,6 +136,9 @@ public class AlarmTaskReciver extends BroadcastReceiver {
 
         }
 
+        Func.saveStartAlarmTask(mPreferences,true);
+
         notificationManager.notify(ConstantManager.NOTIFY_ID, notification);
     }
+
 }
