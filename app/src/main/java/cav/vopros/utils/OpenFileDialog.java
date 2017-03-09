@@ -232,7 +232,10 @@ public class OpenFileDialog  extends AlertDialog.Builder{
 
     private List<File> getFiles(String directoryPath){
         File directory = new File(directoryPath);
-        List<File> fileList = Arrays.asList(directory.listFiles());
+        File[] list = directory.listFiles(filenameFilter);
+        if(list == null)
+            list = new File[]{};
+        List<File> fileList = Arrays.asList(list);
         Collections.sort(fileList, new Comparator<File>() {
             @Override
             public int compare(File file, File file2) {
