@@ -28,6 +28,8 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.rollbar.android.Rollbar;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -87,7 +89,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // создаем лоадер для чтения данных
         getSupportLoaderManager().initLoader(0, null, this);
 
-
+       // Rollbar.init(this, "35ff1f6c6b98499fb64af65d46cfa0bc", "production");
     }
 
     private void setupBar(){
