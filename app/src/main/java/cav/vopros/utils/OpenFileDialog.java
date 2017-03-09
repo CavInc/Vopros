@@ -9,6 +9,7 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Environment;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.Gravity;
@@ -72,7 +73,7 @@ public class OpenFileDialog  extends AlertDialog.Builder{
                         if (selectedIndex > -1 && listener != null) {
                             listener.OnSelectedFile(listView.getItemAtPosition(selectedIndex).toString());
                         }
-                        listener.OnSelectedDirectory(title.getText().toString());
+                        listener.OnSelectedDirectory(currentPath);
                     }
                 })
                 .setNegativeButton(android.R.string.cancel, null);

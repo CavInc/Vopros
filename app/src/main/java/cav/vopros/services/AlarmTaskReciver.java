@@ -14,6 +14,7 @@ import android.os.Build;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+
 import java.io.File;
 import java.util.List;
 
@@ -100,12 +101,12 @@ public class AlarmTaskReciver extends BroadcastReceiver {
             }
 
             Log.d(TAG,"SELECT PATH : "+mPreferences.getString("path_to_img",""));
+           // Rollbar.reportMessage(TAG+" SELECT PATH : "+mPreferences.getString("path_to_img",""), "debug");
             Log.d(TAG,"COUNT :"+img.size());
 
             if (index>=img.size()){
                 index = 0;
             }
-            //TODO будет ошибка если нет вобще ни одного графического файла
 
             builder.setSmallIcon(R.drawable.ic_announcement_black_24dp)
                     .setTicker("Важное сообщение!")
@@ -116,15 +117,18 @@ public class AlarmTaskReciver extends BroadcastReceiver {
                     .setContentText(mPreferences.getString("message_txt", ""))
                     .addAction(R.drawable.ic_close_black_24dp,"",pi)
                     .addAction(R.drawable.ic_check_black_24dp,"",piOk)
-
                     .setOngoing(true)
                     .setAutoCancel(true);
-            if (img.size()!=0){
-                builder.setStyle(new Notification.BigPictureStyle()
-                                //.bigPicture(BitmapFactory.decodeFile("/storage/sdcard0/Img/0a76308d91fb8bb0.jpg"))
-                                .bigPicture(Func.getPicSize(String.valueOf(img.get(index))))
-                        //.bigPicture(BitmapFactory.decodeFile(String.valueOf(img.get(index))))
+            try {
+                if (img.size() != 0) {
+                    builder.setStyle(new Notification.BigPictureStyle()
+                                    //.bigPicture(BitmapFactory.decodeFile("/storage/sdcard0/Img/0a76308d91fb8bb0.jpg"))
+                                    .bigPicture(Func.getPicSize(String.valueOf(img.get(index))))
+                            //.bigPicture(BitmapFactory.decodeFile(String.valueOf(img.get(index))))
                            /* .setSummaryText(mPreferences.getString("message_txt", ""))*/);
+                }
+            }catch (Exception e){
+               // Rollbar.reportException(e, "critical", "Set Image");
             }
 
             index += 1;

@@ -41,7 +41,7 @@ public class SettingActivty extends PreferenceActivity  {
                         .setOpenDialogListener(new OpenFileDialog.OpenDialogListener(){
                             @Override
                             public void OnSelectedFile(String fileName) {
-                                Log.d("SETTING","SELECTED");
+                               // Log.d("SETTING","SELECTED");
                                 //Toast.makeText(getApplicationContext(), fileName, Toast.LENGTH_LONG).show();
                                 /*
                                 File x = new File(fileName);

@@ -12,6 +12,7 @@ import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.util.Log;
 
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -53,19 +54,24 @@ public class Func {
     // список файлов из указаного каталога
     public static List<File> listFilesWithSubFolders(File dir) {
         List<File> files = new ArrayList<File>();
+       // Log.d("FUNC"," X: "+dir.getName()+" "+dir.getAbsolutePath());
         try {
             for (File file : dir.listFiles()) {
                 if (file.isDirectory())
                     files.addAll(listFilesWithSubFolders(file));
                 else {
                     if (file.getName().matches(".*\\.jpg")) {
-                        Log.d("FUNC","YES MATHC "+file.getName());
+                        //Log.d("FUNC","YES MATHC "+file.getName());
+                       // Rollbar.reportMessage("FUNC YES MATHC "+file.getName(), "debug");
                         files.add(file);
                     }
                 }
             }
         } catch (NullPointerException e) {
-            Log.d("FUNC","NO LIST");
+          //  Log.d("FUNC","NO LIST");
+            Log.e("FINC","NO LIST",e);
+            //Rollbar.reportMessage("FUNC NO LIST", "debug");
+           // Rollbar.reportException(e, "critical", "FUNC NO LIST "+dir);
         }
         return files;
     }
@@ -80,9 +86,11 @@ public class Func {
             am.set(AlarmManager.RTC_WAKEUP,System.currentTimeMillis()+(1000*60*period),pi);
 
             Log.d("FUNC","START ALARM FUNC");
+            //Rollbar.reportMessage("FUNC START ALARM FUNC", "debug");
         }else {
             am.cancel(pi);
             Log.d("FUNC","STOP ALARM FUNC");
+            //Rollbar.reportMessage("FUNC STOP ALARM FUNC", "debug");
         }
     }
 
