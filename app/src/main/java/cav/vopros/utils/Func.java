@@ -60,7 +60,7 @@ public class Func {
                 if (file.isDirectory())
                     files.addAll(listFilesWithSubFolders(file));
                 else {
-                    if (file.getName().matches(".*\\.jpg")) {
+                    if (file.getName().matches(".*\\.(jpg|png)")) {
                         //Log.d("FUNC","YES MATHC "+file.getName());
                        // Rollbar.reportMessage("FUNC YES MATHC "+file.getName(), "debug");
                         files.add(file);
