@@ -8,7 +8,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.preference.PreferenceManager;
+
 import android.provider.MediaStore;
 import android.util.Log;
 
@@ -61,17 +61,12 @@ public class Func {
                     files.addAll(listFilesWithSubFolders(file));
                 else {
                     if (file.getName().matches(".*\\.(jpg|png)")) {
-                        //Log.d("FUNC","YES MATHC "+file.getName());
-                       // Rollbar.reportMessage("FUNC YES MATHC "+file.getName(), "debug");
                         files.add(file);
                     }
                 }
             }
         } catch (NullPointerException e) {
-          //  Log.d("FUNC","NO LIST");
             Log.e("FINC","NO LIST",e);
-            //Rollbar.reportMessage("FUNC NO LIST", "debug");
-           // Rollbar.reportException(e, "critical", "FUNC NO LIST "+dir);
         }
         return files;
     }
@@ -86,11 +81,9 @@ public class Func {
             am.set(AlarmManager.RTC_WAKEUP,System.currentTimeMillis()+(1000*60*period),pi);
 
             Log.d("FUNC","START ALARM FUNC");
-            //Rollbar.reportMessage("FUNC START ALARM FUNC", "debug");
         }else {
             am.cancel(pi);
             Log.d("FUNC","STOP ALARM FUNC");
-            //Rollbar.reportMessage("FUNC STOP ALARM FUNC", "debug");
         }
     }
 

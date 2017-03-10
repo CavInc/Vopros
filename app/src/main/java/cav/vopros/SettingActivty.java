@@ -6,10 +6,7 @@ import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
-import android.util.Log;
-import android.widget.Toast;
 
-import java.io.File;
 
 import cav.vopros.utils.ConstantManager;
 import cav.vopros.utils.OpenFileDialog;
@@ -41,8 +38,6 @@ public class SettingActivty extends PreferenceActivity  {
                         .setOpenDialogListener(new OpenFileDialog.OpenDialogListener(){
                             @Override
                             public void OnSelectedFile(String fileName) {
-                               // Log.d("SETTING","SELECTED");
-                                //Toast.makeText(getApplicationContext(), fileName, Toast.LENGTH_LONG).show();
                                 /*
                                 File x = new File(fileName);
                                 if (x.isFile()){

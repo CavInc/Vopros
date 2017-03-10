@@ -5,16 +5,13 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Display;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -27,9 +24,8 @@ import java.util.Date;
 import java.util.List;
 
 import cav.vopros.managers.DbConnector;
-import cav.vopros.utils.AspectRatioImageView;
 import cav.vopros.utils.ConstantManager;
-import cav.vopros.utils.OpenFileDialog;
+
 
 /**
  * Created by Kotov Alexandr on 28.02.17.
@@ -75,7 +71,6 @@ public class TaskOutActivity extends AppCompatActivity implements View.OnClickLi
 
         mMessage.setText(mPreferences.getString("message_txt",""));
 
-        //setImage();
         Display display = getWindowManager().getDefaultDisplay();
         mScreenWidth = display.getWidth();
 
@@ -102,12 +97,6 @@ public class TaskOutActivity extends AppCompatActivity implements View.OnClickLi
             case R.id.out_ok_btn:
                 db.updateRec(dt,false,true);
                 break;
-            /*
-            case R.id.open_dialog_btn:
-                OpenFileDialog fileDialog = new OpenFileDialog(this);
-                fileDialog.show();
-                break;
-                */
         }
         saveIndexImage();
         finish();
