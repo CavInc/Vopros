@@ -38,8 +38,6 @@ public class AlarmTaskReciver extends BroadcastReceiver {
         Func.startStopServiceAlartm(context,false,0);
         showNotification(context);
     }
-    //http://developer.alexanderklimov.ru/android/notification.php
-    //http://startandroid.ru/ru/uroki/vse-uroki-spiskom/164-urok-99-service-uvedomlenija-notifications.html
 
 
     private void showNotification(Context context){

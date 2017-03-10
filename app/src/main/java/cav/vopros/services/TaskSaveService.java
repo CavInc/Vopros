@@ -37,10 +37,10 @@ public class TaskSaveService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.d(TAG,"START SETVICE");
+       // Log.d(TAG,"START SETVICE");
         closeNotification();
-        Log.d(TAG,"action :"+intent.getAction());
-        Log.d(TAG,"content :"+intent.getBooleanExtra("mode",false));
+       // Log.d(TAG,"action :"+intent.getAction());
+       // Log.d(TAG,"content :"+intent.getBooleanExtra("mode",false));
         // установлен ли флаг запуска сервиса кнопкой
         mServiceFlag = PreferenceManager.getDefaultSharedPreferences(getBaseContext())
                 .getBoolean(ConstantManager.START_SERVICE_FLAG,false);
@@ -73,14 +73,6 @@ public class TaskSaveService extends Service {
         protected Void doInBackground(Void... params) {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             String dt = sdf.format(new Date());
-            /*
-            //TODO переделать на 1 строку без условия
-            if (mode) {
-                db.updateRec(dt, false, true);
-            }else {
-                db.updateRec(dt, true, false);
-            }
-            */
             db.updateRec(dt,!mode,mode);
             return null;
         }
@@ -88,8 +80,8 @@ public class TaskSaveService extends Service {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            Log.d(TAG,"STOP SERVICE");
-            Log.d(TAG, "PERIOD :"+String.valueOf(period));
+           // Log.d(TAG,"STOP SERVICE");
+           // Log.d(TAG, "PERIOD :"+String.valueOf(period));
             if (mServiceFlag) Func.startStopServiceAlartm(getBaseContext(),true,period);
             stopSelf();
         }

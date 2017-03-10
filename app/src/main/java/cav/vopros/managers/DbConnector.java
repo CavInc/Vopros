@@ -36,15 +36,8 @@ public class DbConnector {
         }
     }
 
-    public void insertRec(Boolean no,Boolean yes){
-        open();
-
-        close();
-    }
 
     public void updateRec(String data_rec,Boolean no,Boolean yes){
-        //TODO криво както а все из за того что не отрабатывает несколько команд в одном запросе или я дурак
-        Log.d(TAG,"UPDATE REC");
         open();
         String sql = null;
         if (no){
