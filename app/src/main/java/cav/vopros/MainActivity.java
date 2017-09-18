@@ -111,19 +111,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }else {
             mServiceBtn.setText(getString(R.string.btn_start_message));
         }
-
-        ArrayList<Integer> all_count = db.getCountStatistic();
-        String s = getString(R.string.total_txt)+" \"V\" – "+Integer.toString(all_count.get(1))+"    "+
-                getString(R.string.total_txt)+" \"X\" – "+all_count.get(0).toString();
-
-        mCountRecord.setText(s);
-        getSupportLoaderManager().getLoader(0).forceLoad();
-
+        updateUI();
         if (ContextCompat.checkSelfPermission(this,Manifest.permission.READ_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED) {
            ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},PERMISSION_REQUEST_CODE);
         }
-        Log.d(TAG, String.valueOf(Func.isAlarm(this)));
+        //Log.d(TAG, String.valueOf(Func.isAlarm(this)));
     }
 
     @Override
@@ -132,6 +125,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (db!=null) {
             db.close();
         }
+    }
+
+    private void updateUI(){
+        ArrayList<Integer> all_count = db.getCountStatistic();
+        String s = getString(R.string.total_txt)+" \"V\" – "+Integer.toString(all_count.get(1))+"    "+
+                getString(R.string.total_txt)+" \"X\" – "+all_count.get(0).toString();
+
+        mCountRecord.setText(s);
+        getSupportLoaderManager().getLoader(0).forceLoad();
     }
 
 

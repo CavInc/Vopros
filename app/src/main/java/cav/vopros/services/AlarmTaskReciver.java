@@ -16,6 +16,7 @@ import android.util.Log;
 
 
 import java.io.File;
+import java.util.Calendar;
 import java.util.List;
 
 import cav.vopros.R;
@@ -146,6 +147,18 @@ public class AlarmTaskReciver extends BroadcastReceiver {
         //Func.saveStartAlarmTask(mPreferences,true);
 
         notificationManager.notify(ConstantManager.NOTIFY_ID, notification);
+        saveNextTime(period);
+    }
+
+    // сохраняем время следующего выполнения ?
+    private void saveNextTime(int period){
+        Calendar c = Calendar.getInstance();
+        c.add(Calendar.MINUTE,period);
+        String hm = c.get(Calendar.HOUR_OF_DAY)+":"+c.get(Calendar.MONTH);
+        SharedPreferences.Editor editor = mPreferences.edit();
+        editor.putString(ConstantManager.NEXT_TIME,hm);
+        editor.apply();
+
     }
 
 }
