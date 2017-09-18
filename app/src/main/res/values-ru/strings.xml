@@ -8,4 +8,6 @@
     <string name="pref_message_title">Текст напоминания</string>
     <string name="pre_time_delay">Задержка в минутах</string>
     <string name="select_directory">Выбор каталога</string>
+    <string name="next_timer_str">Следующий старт таймeра :</string>
+    <string name="action_settings">Настройки</string>
 </resources>

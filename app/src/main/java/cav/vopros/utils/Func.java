@@ -87,6 +87,16 @@ public class Func {
         }
     }
 
+    public static boolean isAlarm(Context context){
+        Intent intent=new Intent(context, AlarmTaskReciver.class);
+        PendingIntent pi= PendingIntent.getBroadcast(context,0, intent,0);
+        if (pi!=null) {
+            return true;
+        }else {
+            return false;
+        }
+    }
+
     public static void saveIndexImage(SharedPreferences pref,int index){
         SharedPreferences.Editor editor = pref.edit();
         editor.putInt(ConstantManager.IMAGE_INDEX,index);

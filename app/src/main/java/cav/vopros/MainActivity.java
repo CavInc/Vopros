@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static final int PERMISSION_REQUEST_CODE = 122;
     private Button mServiceBtn;
     private TextView mCountRecord;
+    private TextView mNextTimer;
 
     private ListView mListView;
 
@@ -71,6 +72,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mServiceBtn.setOnClickListener(this);
 
         mCountRecord = (TextView) findViewById(R.id.count_record);
+        mNextTimer = (TextView) findViewById(R.id.next_timer);
 
         scAdapter = new SimpleCursorAdapter(this, R.layout.list_item, null, from, to, 0);
 
@@ -82,6 +84,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         if (mPreferences!=null) {
             mStatusService = mPreferences.getBoolean(ConstantManager.START_SERVICE_FLAG,false);
+
+        }else {
+            mNextTimer.setText(getString(R.string.next_timer_str)+" 00:00");
         }
 
         setupBar();
@@ -118,6 +123,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
            ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},PERMISSION_REQUEST_CODE);
         }
+        Log.d(TAG, String.valueOf(Func.isAlarm(this)));
     }
 
     @Override
@@ -190,7 +196,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             // запущено
             mStatusService = false;
             mServiceBtn.setText(getString(R.string.btn_start_message));
-            Log.d(TAG,"STOP");
             //am.cancel(pi);
             Func.startStopServiceAlartm(this,false,0);
 
@@ -198,7 +203,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             // остановлено
             mStatusService = true;
             mServiceBtn.setText(getString(R.string.btn_end_message));
-            Log.d(TAG,"START");
             int period = Integer.parseInt(mPreferences.getString(ConstantManager.PREF_TIME_DELAY,"12"));
             // типа скоката минут  для правильного старта добавть вместо System.currentTimeMillis() System.currentTimeMillis()+period
             //am.setRepeating(AlarmManager.RTC_WAKEUP,System.currentTimeMillis(),1000*60*period,pi);

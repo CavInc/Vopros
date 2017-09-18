@@ -15,14 +15,22 @@
        android:layout_width="match_parent"
        android:layout_height="wrap_content"
        android:text="Count"
+       android:textStyle="bold"
        android:layout_marginBottom="16dp"/>
+    <TextView
+        android:id="@+id/next_timer"
+        android:text="@string/next_timer_str"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/count_record"
+        android:layout_marginBottom="16dp"/>
 
    <ListView
        android:id="@+id/list"
        android:layout_width="match_parent"
        android:layout_height="wrap_content"
        android:layout_above="@+id/start_btn"
-       android:layout_below="@+id/count_record">
+       android:layout_below="@+id/next_timer">
 
    </ListView>
 

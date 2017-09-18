@@ -10,5 +10,7 @@
     <string name="pref_message_title">Text reminders</string>
     <string name="pre_time_delay">The delay in minutes</string>
     <string name="select_directory">Selecting a directory</string>
+    <string name="next_timer_str">Next timer start</string>
+    <string name="action_settings">Settings</string>
 
 </resources>
