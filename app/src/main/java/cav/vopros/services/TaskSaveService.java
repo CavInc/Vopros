@@ -12,6 +12,7 @@ import android.util.Log;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import cav.vopros.MainActivity;
 import cav.vopros.managers.DbConnector;
 import cav.vopros.utils.ConstantManager;
 import cav.vopros.utils.Func;
@@ -83,7 +84,13 @@ public class TaskSaveService extends Service {
            // Log.d(TAG,"STOP SERVICE");
            // Log.d(TAG, "PERIOD :"+String.valueOf(period));
             if (mServiceFlag) Func.startStopServiceAlartm(getBaseContext(),true,period);
+            // передаем данные в главное актифити что мы все обработали
+            Intent intent = new Intent(MainActivity.BROADCAST_ACTION);
+            intent.putExtra(ConstantManager.UPDATE_SERVICE_DATA,true);
+            sendBroadcast(intent);
+
             stopSelf();
         }
     }
+
 }

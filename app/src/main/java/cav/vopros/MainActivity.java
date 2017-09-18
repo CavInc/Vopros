@@ -5,8 +5,10 @@ package cav.vopros;
 import android.Manifest;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -56,6 +58,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private DbConnector db;
 
+    private BroadcastReceiver broadcastReceiver;
+    public final static String BROADCAST_ACTION = "cav.vopros.broadcast_refresh";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,15 +89,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         if (mPreferences!=null) {
             mStatusService = mPreferences.getBoolean(ConstantManager.START_SERVICE_FLAG,false);
+            mNextTimer.setText(getString(R.string.next_timer_str)+mPreferences.getString(ConstantManager.NEXT_TIME,"None"));
 
         }else {
-            mNextTimer.setText(getString(R.string.next_timer_str)+" 00:00");
+            mNextTimer.setText(getString(R.string.next_timer_str)+" None");
         }
 
         setupBar();
         // создаем лоадер для чтения данных
         getSupportLoaderManager().initLoader(0, null, this);
 
+        broadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                Log.d(TAG,"UPD IN SERVICE");
+                boolean res = intent.getBooleanExtra(ConstantManager.UPDATE_SERVICE_DATA,false);
+                if (res) {
+                    updateUI();
+                }
+            }
+        };
+
+        // создаем фильтр для BroadcastReceiver
+        IntentFilter intFilt = new IntentFilter(BROADCAST_ACTION);
+        // регистрируем (включаем) BroadcastReceiver
+        registerReceiver(broadcastReceiver, intFilt);
     }
 
     private void setupBar(){
@@ -125,6 +146,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (db!=null) {
             db.close();
         }
+        unregisterReceiver(broadcastReceiver);
     }
 
     private void updateUI(){
@@ -134,6 +156,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         mCountRecord.setText(s);
         getSupportLoaderManager().getLoader(0).forceLoad();
+        mNextTimer.setText(getString(R.string.next_timer_str)+mPreferences.getString(ConstantManager.NEXT_TIME,"None"));
     }
 
 

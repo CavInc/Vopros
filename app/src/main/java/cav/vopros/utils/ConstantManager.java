@@ -25,4 +25,5 @@ public interface ConstantManager {
 
     String START_ALARM_FLAG = "START_ALAGM_FLG";
     String NEXT_TIME = "NEXT_TIME";
+    String UPDATE_SERVICE_DATA = "UPDATE_SERVICE_DATA";
 }
